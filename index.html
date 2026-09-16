@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Drive to AIIMS Delhi 🩺🚙</title>
+    <title>The Ultimate Drive to AIIMS Delhi 🩺🚙</title>
     <style>
         * {
             margin: 0;
@@ -16,7 +16,7 @@
             width: 100%;
             height: 100%;
             overflow: hidden;
-            background: #1a1a1a;
+            background: #111;
         }
 
         /* Screens */
@@ -30,7 +30,7 @@
             align-items: center;
             background: linear-gradient(135deg, #1f4068, #162447);
             color: white;
-            z-index: 10;
+            z-index: 20;
             transition: opacity 0.5s ease;
         }
 
@@ -41,48 +41,50 @@
         }
 
         h1 {
-            font-size: 2.5rem;
+            font-size: 2.8rem;
             margin-bottom: 20px;
             text-align: center;
-            color: #e43f5a;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            color: #ff4757;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.6);
         }
 
         p {
             font-size: 1.2rem;
             margin-bottom: 30px;
             text-align: center;
-            max-width: 600px;
+            max-width: 650px;
             padding: 0 20px;
+            line-height: 1.6;
         }
 
         input {
-            padding: 12px 20px;
-            font-size: 1.1rem;
+            padding: 14px 24px;
+            font-size: 1.2rem;
             border-radius: 30px;
             border: none;
             outline: none;
             margin-bottom: 20px;
             text-align: center;
-            width: 280px;
+            width: 300px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
 
         button {
-            padding: 12px 30px;
-            font-size: 1.1rem;
+            padding: 14px 35px;
+            font-size: 1.2rem;
             font-weight: bold;
-            background: #e43f5a;
+            background: #ff4757;
             color: white;
             border: none;
             border-radius: 30px;
             cursor: pointer;
             transition: 0.3s;
-            box-shadow: 0 4px 15px rgba(228, 63, 90, 0.4);
+            box-shadow: 0 4px 20px rgba(255, 71, 87, 0.5);
         }
 
         button:hover {
-            background: #ff4757;
-            transform: scale(1.05);
+            background: #ff6b81;
+            transform: scale(1.08);
         }
 
         /* Game Arena */
@@ -90,19 +92,29 @@
             position: relative;
             width: 100%;
             height: 100%;
-            background: #2c3e50;
+            background: #2f3640;
             overflow: hidden;
         }
 
-        /* Road */
+        /* Real Racing Road */
         .road {
             position: absolute;
             width: 60%;
             height: 100%;
             left: 20%;
-            background: #34495e;
-            border-left: 10px dashed #f1c40f;
-            border-right: 10px dashed #f1c40f;
+            background: #353b48;
+            border-left: 8px solid #fbc531;
+            border-right: 8px solid #fbc531;
+            overflow: hidden;
+        }
+
+        /* Moving Road Lanes */
+        .road-line {
+            position: absolute;
+            width: 10px;
+            height: 100px;
+            background: #ffffff;
+            left: calc(50% - 5px);
         }
 
         @media(max-width: 768px) {
@@ -112,58 +124,65 @@
             }
         }
 
-        /* Moving Scenery / Milestone Banner */
-        .milestone {
-            position: absolute;
-            left: 22%;
-            font-size: 1.2rem;
-            font-weight: bold;
-            color: #fff;
-            background: rgba(0, 0, 0, 0.6);
-            padding: 8px 15px;
-            border-radius: 8px;
-            border: 2px solid #e43f5a;
-            white-space: nowrap;
-            z-index: 2;
-        }
-
-        /* Thar Car */
+        /* Thar Car Styling */
         #thar {
             position: absolute;
-            bottom: 30px;
+            bottom: 40px;
             left: 45%;
-            width: 80px;
-            height: 140px;
-            background: #b91c1c;
-            border-radius: 12px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            width: 70px;
+            height: 130px;
+            background: #c0392b;
+            border-radius: 10px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.6);
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            z-index: 5;
-            transition: transform 0.1s linear;
+            justify-content: flex-start;
+            z-index: 10;
+            transition: left 0.05s linear;
         }
 
-        /* Car details styling */
         .car-roof {
-            width: 70px;
-            height: 50px;
-            background: #111;
-            border-radius: 8px;
-            margin-top: -10px;
+            width: 60px;
+            height: 40px;
+            background: #1e272e;
+            border-radius: 6px;
+            margin-top: 15px;
         }
 
         .car-nameplate {
-            background: white;
-            color: black;
-            font-size: 0.65rem;
+            background: #f5f6fa;
+            color: #2f3640;
+            font-size: 0.6rem;
             font-weight: bold;
-            padding: 2px 6px;
-            border-radius: 4px;
-            margin-top: 15px;
+            padding: 3px 6px;
+            border-radius: 3px;
+            margin-top: 25px;
             letter-spacing: 1px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            border: 1px solid #718093;
+        }
+
+        /* Traffic Cars */
+        .traffic-car {
+            position: absolute;
+            width: 70px;
+            height: 130px;
+            background: #2980b9;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            z-index: 5;
+        }
+
+        .traffic-roof {
+            width: 60px;
+            height: 40px;
+            background: #1e272e;
+            border-radius: 6px;
+            margin-top: 15px;
         }
 
         /* HUD / Scoreboard */
@@ -171,96 +190,136 @@
             position: absolute;
             top: 20px;
             left: 20px;
-            background: rgba(0,0,0,0.7);
-            padding: 10px 20px;
-            border-radius: 10px;
+            background: rgba(0,0,0,0.8);
+            padding: 12px 20px;
+            border-radius: 12px;
             font-size: 1.1rem;
-            color: #f1c40f;
-            z-index: 8;
+            color: #fbc531;
+            z-index: 15;
             font-weight: bold;
+            border: 1px solid #fbc531;
         }
 
-        /* Controls for mobile */
+        /* Message Popup Box on Road */
+        #message-popup {
+            position: absolute;
+            top: 20%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.85);
+            color: #fff;
+            padding: 12px 25px;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border: 2px solid #ff4757;
+            text-align: center;
+            z-index: 18;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+            box-shadow: 0 5px 20px rgba(255, 71, 87, 0.4);
+        }
+
+        /* Mobile Controls */
         .controls {
             position: absolute;
             bottom: 20px;
             width: 100%;
             display: flex;
-            justify-content: space-around;
-            padding: 0 40px;
-            z-index: 8;
+            justify-content: space-between;
+            padding: 0 30px;
+            z-index: 15;
         }
 
         .ctrl-btn {
-            background: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.25);
             border: 2px solid white;
             color: white;
-            font-size: 1.5rem;
-            width: 60px;
-            height: 60px;
+            font-size: 1.8rem;
+            width: 70px;
+            height: 70px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             user-select: none;
+            backdrop-filter: blur(5px);
         }
 
         /* Victory Screen */
         #victory-screen {
-            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            background: linear-gradient(135deg, #130cb7, #52e5e7);
         }
     </style>
 </head>
 <body>
 
-    <!-- Step 1: Welcome & Name Input Screen -->
+    <!-- Step 1: Welcome & Name Screen -->
     <div id="welcome-screen" class="screen">
-        <h1>🚗 The Dream Drive to AIIMS 🩺</h1>
-        <p>Aapke liye ek chhota sa safar, aapke bade sapne tak! Pehle apna naam batayein:</p>
+        <h1>🚙 Drive Your Dream Thar to AIIMS 🩺</h1>
+        <p>Today, your dream becomes reality! Enter your name to take the wheel of your custom Thar and drive all the way to AIIMS Delhi for your ultimate NEET victory:</p>
         <input type="text" id="username" placeholder="Enter Name here..." autocomplete="off">
-        <button onclick="startGame()">Start Journey 🚀</button>
+        <button onclick="startGame()">Start Engine & Drive 🚀</button>
     </div>
 
-    <!-- Step 2: Driving Game Screen -->
+    <!-- Step 2: Racing Game Arena -->
     <div id="game-container" class="hidden">
         <div id="hud">Distance to AIIMS: <span id="distance">100</span>%</div>
-        <div class="road"></div>
+        <div id="message-popup">Keep going! Next milestone ahead! 🌟</div>
         
-        <!-- Moving milestones will be injected here via JS -->
-        <div id="milestone-box"></div>
+        <div class="road" id="road-track">
+            <!-- Road stripes will be dynamically generated -->
+        </div>
 
-        <!-- The Thar -->
+        <!-- The Player Thar -->
         <div id="thar">
             <div class="car-roof"></div>
             <div class="car-nameplate" id="plate-text">THAR</div>
         </div>
 
-        <!-- Mobile Controls -->
+        <!-- Controls for Mobile / Touch -->
         <div class="controls">
             <div class="ctrl-btn" ontouchstart="moveLeft()" onmousedown="moveLeft()">◀</div>
             <div class="ctrl-btn" ontouchstart="moveRight()" onmousedown="moveRight()">▶</div>
         </div>
     </div>
 
-    <!-- Step 3: Victory / AIIMS Reached Screen -->
+    <!-- Step 3: Victory Screen -->
     <div id="victory-screen" class="screen hidden">
-        <h1>🎉 Destination Reached: AIIMS Delhi! 🏥</h1>
-        <p id="victory-msg">Badhai ho! Aapne apna dream Thar drive kiya aur AIIMS Delhi tak ka safar tay kiya. Aapka NEET crack karna ab bas waqt ki baat hai, Doctor Sahiba! ✨</p>
-        <button onclick="restartGame()">Wapas Chalein 🔄</button>
+        <h1>🎉 AIIMS Delhi Reached! 🏥✨</h1>
+        <p id="victory-msg">Incredible drive! You successfully navigated through all hurdles straight to AIIMS Delhi. May your hard work for NEET make this dream come true in real life. You've got this, Future Doctor! 🩺🔥</p>
+        <button onclick="restartGame()">Drive Again 🔄</button>
     </div>
 
     <script>
         let playerName = "";
-        let carX = window.innerWidth / 2 - 40;
-        const thar = document.getElementById("thar");
-        let gameInterval;
-        let distanceLeft = 100;
+        let carX = 0;
+        let roadWidth = 0;
+        let roadLeftMargin = 0;
         let isPlaying = false;
+        let distanceLeft = 100;
+        let gameInterval;
+        let trafficInterval;
+        let stripeInterval;
+        
+        const thar = document.getElementById("thar");
+        const roadTrack = document.getElementById("road-track");
+        const messagePopup = document.getElementById("message-popup");
+
+        const motivationalMessages = [
+            "🚗 Overtaking traffic like a true topper!",
+            "📚 Revision done! Speeding towards AIIMS Delhi!",
+            "✨ 'Consistency is key' - Keep driving forward!",
+            "🩺 Future NEET Topper crossing the milestone!",
+            "🔥 Hard work today, white coat tomorrow!",
+            "💪 No obstacle can stop your dedication!"
+        ];
 
         function startGame() {
             const input = document.getElementById("username").value.trim();
             if(input === "") {
-                alert("Pehle naam toh likhiye! 😊");
+                alert("Please enter your name first! 😊");
                 return;
             }
             playerName = input;
@@ -270,59 +329,163 @@
             document.getElementById("welcome-screen").classList.add("hidden");
             document.getElementById("game-container").classList.remove("hidden");
             
+            // Calculate road dimensions
+            updateRoadDimensions();
+            carX = roadLeftMargin + (roadWidth / 2) - 35;
+            thar.style.left = carX + 'px';
+
             isPlaying = true;
-            startJourneyProgress();
+            startRace();
         }
+
+        function updateRoadDimensions() {
+            const roadRect = roadTrack.getBoundingClientRect();
+            roadWidth = roadRect.width;
+            roadLeftMargin = roadRect.left;
+        }
+
+        // Handle window resizing
+        window.addEventListener('resize', () => {
+            if(isPlaying) updateRoadDimensions();
+        });
 
         // Keyboard controls
         window.addEventListener('keydown', (e) => {
             if (!isPlaying) return;
-            const roadLeft = window.innerWidth * 0.2;
-            const roadRight = window.innerWidth * 0.8 - 80;
+            const minLeft = roadLeftMargin + 10;
+            const maxRight = roadLeftMargin + roadWidth - 80;
 
             if (e.key === 'ArrowLeft' || e.key === 'a') {
-                carX = Math.max(roadLeft, carX - 30);
+                carX = Math.max(minLeft, carX - 35);
             } else if (e.key === 'ArrowRight' || e.key === 'd') {
-                carX = Math.min(roadRight, carX + 30);
+                carX = Math.min(maxRight, carX + 35);
             }
             thar.style.left = carX + 'px';
         });
 
-        // Touch/Click controls for mobile
+        // Touch controls
         function moveLeft() {
             if (!isPlaying) return;
-            const roadLeft = window.innerWidth * 0.2;
-            carX = Math.max(roadLeft, carX - 40);
+            const minLeft = roadLeftMargin + 10;
+            carX = Math.max(minLeft, carX - 45);
             thar.style.left = carX + 'px';
         }
 
         function moveRight() {
             if (!isPlaying) return;
-            const roadRight = window.innerWidth * 0.8 - 80;
-            carX = Math.min(roadRight, carX + 40);
+            const maxRight = roadLeftMargin + roadWidth - 80;
+            carX = Math.min(maxRight, carX + 45);
             thar.style.left = carX + 'px';
         }
 
-        function startJourneyProgress() {
+        function startRace() {
             distanceLeft = 100;
             const distanceSpan = document.getElementById("distance");
-            
+
+            // Create animated road striping effect
+            for(let i=0; i<5; i++) {
+                createRoadStripe(i * 150);
+            }
+
+            // Game progress timer (Total ~35 seconds trip)
             gameInterval = setInterval(() => {
                 distanceLeft -= 1;
                 distanceSpan.innerText = distanceLeft;
 
+                // Show dynamic messages at intervals
+                if(distanceLeft === 80 || distanceLeft === 60 || distanceLeft === 40 || distanceLeft === 20) {
+                    showRandomMessage();
+                }
+
                 if (distanceLeft <= 0) {
                     clearInterval(gameInterval);
+                    clearInterval(trafficInterval);
                     endGame();
                 }
-            }, 300); // 30 seconds total drive time
+            }, 350);
+
+            // Spawn traffic cars coming from ahead
+            trafficInterval = setInterval(() => {
+                if(isPlaying) createTrafficCar();
+            }, 2500);
+        }
+
+        function createRoadStripe(initialTop) {
+            const stripe = document.createElement('div');
+            stripe.className = 'road-line';
+            stripe.style.top = initialTop + 'px';
+            roadTrack.appendChild(stripe);
+
+            let topPos = initialTop;
+            const moveStripe = setInterval(() => {
+                if(!isPlaying) {
+                    clearInterval(moveStripe);
+                    stripe.remove();
+                    return;
+                }
+                topPos += 10;
+                if(topPos > roadTrack.clientHeight) {
+                    topPos = -100;
+                }
+                stripe.style.top = topPos + 'px';
+            }, 50);
+        }
+
+        function createTrafficCar() {
+            updateRoadDimensions();
+            const traffic = document.createElement('div');
+            traffic.className = 'traffic-car';
+            
+            // Random lane placement inside the road
+            const laneOffset = Math.random() * (roadWidth - 90);
+            const trafficX = roadLeftMargin + laneOffset;
+            
+            traffic.style.left = trafficX + 'px';
+            traffic.style.top = '-150px';
+            
+            // Random car colors
+            const colors = ['#2980b9', '#27ae60', '#8e44ad', '#d35400', '#16a085'];
+            traffic.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+
+            const roof = document.createElement('div');
+            roof.className = 'traffic-roof';
+            traffic.appendChild(roof);
+
+            roadTrack.appendChild(traffic);
+
+            let trafficTop = -150;
+            const moveTraffic = setInterval(() => {
+                if(!isPlaying) {
+                    clearInterval(moveTraffic);
+                    traffic.remove();
+                    return;
+                }
+                trafficTop += 8; // speed of traffic
+                traffic.style.top = trafficTop + 'px';
+
+                // Remove when out of screen bounds
+                if(trafficTop > roadTrack.clientHeight + 150) {
+                    clearInterval(moveTraffic);
+                    traffic.remove();
+                }
+            }, 30);
+        }
+
+        function showRandomMessage() {
+            const msg = motivationalMessages[Math.floor(Math.random() * motivationalMessages.length)];
+            messagePopup.innerText = msg;
+            messagePopup.style.opacity = '1';
+
+            setTimeout(() => {
+                messagePopup.style.opacity = '0';
+            }, 3500);
         }
 
         function endGame() {
             isPlaying = false;
             document.getElementById("game-container").classList.add("hidden");
             document.getElementById("victory-screen").classList.remove("hidden");
-            document.getElementById("victory-msg").innerText = `${playerName}, aapne apni dream Thar se AIIMS Delhi tak ka safar kamyabi se poora kar liya hai! NEET crack karke white coat pehne ka sapna ab sach hone wala hai. All the best, Future Doctor! 🩺✨`;
+            document.getElementById("victory-msg.innerText") = `${playerName}, you successfully drove your dream Thar all the way to AIIMS Delhi! Crossing every obstacle with full speed is how you will conquer NEET too. Wishing you boundless success, Future Doctor! 🩺✨`;
         }
 
         function restartGame() {
@@ -331,4 +494,3 @@
     </script>
 </body>
 </html>
-
