@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Safa's Realistic Drive to AIIMS Delhi 🎂🚗🏥</title>
+    <title>Safa's Drive to AIIMS Delhi 🎂🚗🏥</title>
     <style>
         * {
             box-sizing: border-box;
@@ -124,33 +124,57 @@
             top: 22%;
             left: 50%;
             transform: translate(-50%, -50%) scale(0);
-            background: rgba(255, 255, 255, 0.92);
+            background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
-            border: 2px solid #ff2a5f;
+            border: 3px solid #ff2a5f;
             border-radius: 20px;
-            padding: 12px 20px;
-            max-width: 300px;
-            width: 80%;
+            padding: 15px 20px;
+            max-width: 320px;
+            width: 85%;
             text-align: center;
-            box-shadow: 0 15px 35px rgba(255, 42, 95, 0.3);
+            box-shadow: 0 15px 40px rgba(255, 42, 95, 0.4);
             z-index: 25;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             pointer-events: none;
+            opacity: 0;
         }
 
-        #flyingMsg.active {
-            transform: translate(-50%, -50%) scale(1);
+        /* Different dynamic animations */
+        .anim-bounce { animation: popBounce 3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+        .anim-slide { animation: popSlide 3s ease-in-out forwards; }
+        .anim-zoom { animation: popZoom 3s ease-out forwards; }
+
+        @keyframes popBounce {
+            0% { transform: translate(-50%, -100%) scale(0); opacity: 0; }
+            15% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
+            25% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+            85% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+            100% { transform: translate(-50%, 50%) scale(0); opacity: 0; }
+        }
+
+        @keyframes popSlide {
+            0% { transform: translate(-100%, -50%) scale(0.8); opacity: 0; }
+            15% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+            85% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+            100% { transform: translate(100%, -50%) scale(0.8); opacity: 0; }
+        }
+
+        @keyframes popZoom {
+            0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+            20% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+            80% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+            100% { transform: translate(-50%, -50%) scale(1.5); opacity: 0; }
         }
 
         #flyingMsg .icon {
-            font-size: 28px;
+            font-size: 32px;
+            margin-bottom: 5px;
         }
 
         #flyingMsg p {
             color: #0f172a;
-            font-size: 13px;
-            font-weight: 700;
-            margin-top: 2px;
+            font-size: 14px;
+            font-weight: 800;
+            line-height: 1.4;
         }
 
         /* Crash Alert Modal */
@@ -198,7 +222,7 @@
             font-size: 15px;
         }
 
-        /* Ergonomic Controls Floating above Bottom */
+        /* Controls */
         .controls {
             position: absolute;
             bottom: 40px;
@@ -350,14 +374,14 @@
         }
 
         .cert-card {
-            background: linear-gradient(135deg, #ffffff, #fff5f7);
+            background: linear-gradient(135deg, #ffffff, #f1f5f9);
             color: #0f172a;
-            border: 5px double #ffd700;
+            border: 5px double #0ea5e9;
             padding: 25px;
             border-radius: 22px;
             max-width: 460px;
             width: 92%;
-            box-shadow: 0 0 60px rgba(255, 215, 0, 0.4);
+            box-shadow: 0 0 60px rgba(14, 165, 233, 0.4);
         }
     </style>
 </head>
@@ -367,13 +391,13 @@
         <!-- 3D Interactive Showroom & Start Screen -->
         <div id="showroomOverlay">
             <div class="showroom-header">
-                <h1>DR. SAFA'S BLACK THAR 🚘</h1>
-                <p>Official Birthday Edition • Dedicated Drive to AIIMS Delhi</p>
+                <h1>SAFA'S BLACK THAR 🚘</h1>
+                <p>Official Birthday Edition • Next Stop: AIIMS Delhi</p>
             </div>
             
             <canvas id="showroomCanvas" style="width: 100%; height: 50vh;"></canvas>
 
-            <button class="start-btn" onclick="startGameDrive()">START DRIVE 🚀</button>
+            <button class="start-btn" onclick="startGameDrive()">START ENGINE 🚀</button>
         </div>
 
         <canvas id="gameCanvas"></canvas>
@@ -404,7 +428,7 @@
         <div id="crashModal">
             <div class="crash-box">
                 <h2>💥 Minor Bumper Touch!</h2>
-                <p style="margin-top: 10px; color: #cbd5e1; font-size: 14px;">"Koi nahi Dr. Safa! Keep calm, stay on your track and try again!"</p>
+                <p style="margin-top: 10px; color: #cbd5e1; font-size: 14px;">"Koi baat nahi Safa! Keep calm, stay on your track and try again!"</p>
                 <button class="crash-btn" onclick="restartFromCrash()">Resume Drive 🔄</button>
             </div>
         </div>
@@ -425,8 +449,8 @@
         <!-- Secret Keypad Screen (AIIMS Security Gate) -->
         <div id="secretLockScreen">
             <div class="lock-box">
-                <h2 style="color: #ffd700; font-size: 22px;">🔐 AIIMS MAIN GATE SECURITY</h2>
-                <p style="font-size: 13px; color: #94a3b8; margin-top: 6px;">Enter Code (e.g., 0055, 0001, or 7777) to Unlock Special Birthday Honors!</p>
+                <h2 style="color: #ffd700; font-size: 22px;">🔐 AIIMS VIP GATE</h2>
+                <p style="font-size: 13px; color: #94a3b8; margin-top: 6px;">Enter the Secret Code (e.g., 0055, 0001, or 7777) to Unlock Your Surprise!</p>
                 
                 <input type="text" id="passInput" class="lock-input" placeholder="0055" maxlength="10">
                 <br>
@@ -438,19 +462,19 @@
         <!-- Final Birthday Screen -->
         <div id="finalBirthdayModal">
             <div class="cert-card">
-                <div style="background: #ff2a5f; color: white; padding: 6px 16px; border-radius: 20px; font-size: 12px; font-weight: 800; display: inline-block; margin-bottom: 12px;">🎂 HAPPY BIRTHDAY DR. SAFA! 🎉</div>
-                <h2 style="color: #0284c7; font-size: 22px; font-weight: 900;">AIIMS DELHI SEAT CONFIRMED</h2>
-                <p style="font-size: 12px; color: #64748b; font-weight: bold; margin-bottom: 15px;">SPECIAL HONORARY BIRTHDAY ADMISSION</p>
+                <div style="background: #ff2a5f; color: white; padding: 6px 16px; border-radius: 20px; font-size: 12px; font-weight: 800; display: inline-block; margin-bottom: 12px;">🎂 HAPPY BIRTHDAY SAFA! 🎉</div>
+                <h2 style="color: #0ea5e9; font-size: 22px; font-weight: 900;">WELCOME TO AIIMS DELHI</h2>
+                <p style="font-size: 12px; color: #64748b; font-weight: bold; margin-bottom: 15px;">THE JOURNEY HAS JUST BEGUN</p>
                 
                 <p style="font-size: 14px; color: #334155; line-height: 1.6;">
-                    <b>Dearest Safa,</b><br>
-                    You navigated highway traffic like a boss, drove your dream Black Thar in full style, and reached AIIMS Delhi campus!<br><br>
-                    May this special birthday bring you endless joy, top NEET ranks, and your dream white coat!
+                    <b>Access Granted! 🚀</b><br>
+                    Safa, you drove your dream Black Thar like a true rockstar and reached the destination!<br><br>
+                    Your journey from this Thar to the real AIIMS operation theatre is going to be legendary. Keep grinding, study hard, clear that NEET, and make this white coat dream a reality! 🩺✨
                 </p>
 
                 <div style="border-top: 2px dashed #cbd5e1; margin-top: 15px; padding-top: 12px; display: flex; justify-content: space-between; font-size: 11px; font-weight: bold; color: #475569;">
-                    <span>📍 Venue: AIIMS Delhi Tower</span>
-                    <span>✍️ Reserved For: Dr. Safa</span>
+                    <span>📍 Destination Achieved</span>
+                    <span>✍️ Reserved For: Safa</span>
                 </div>
             </div>
             <button class="unlock-btn" style="margin-top: 20px;" onclick="location.reload()">Drive Again 🔄</button>
@@ -474,7 +498,7 @@
         window.addEventListener('resize', resizeCanvas);
         resizeCanvas();
 
-        // Audio Effects via Web Audio API (Synthesized Engine, Music & SFX)
+        // Audio Effects via Web Audio API (Synth Music & Engine)
         const AudioCtx = window.AudioContext || window.webkitAudioContext;
         let audioCtx = null;
         let engineOsc = null;
@@ -490,30 +514,38 @@
             engineGain = audioCtx.createGain();
             engineOsc.type = 'sawtooth';
             engineOsc.frequency.setValueAtTime(45, audioCtx.currentTime);
-            engineGain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+            engineGain.gain.setValueAtTime(0.04, audioCtx.currentTime);
             engineOsc.connect(engineGain);
             engineGain.connect(audioCtx.destination);
             engineOsc.start();
 
-            // Ambient Driving Melody Synth
-            let notes = [261.63, 293.66, 329.63, 349.23, 392.00, 440.00];
+            // Cool Upbeat Melody Sequence
+            let melody = [
+                329.63, 0, 329.63, 0, 392.00, 0, 440.00, 0, 
+                493.88, 493.88, 440.00, 392.00, 329.63, 0, 0, 0
+            ];
             let noteIdx = 0;
             musicTimer = setInterval(() => {
-                if (!gameActive || speed <= 5) return;
+                if (!gameActive) return;
                 try {
-                    let osc = audioCtx.createOscillator();
-                    let gain = audioCtx.createGain();
-                    osc.type = 'sine';
-                    osc.frequency.setValueAtTime(notes[noteIdx % notes.length], audioCtx.currentTime);
-                    gain.gain.setValueAtTime(0.03, audioCtx.currentTime);
-                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.35);
-                    osc.connect(gain);
-                    gain.connect(audioCtx.destination);
-                    osc.start();
-                    osc.stop(audioCtx.currentTime + 0.35);
+                    let freq = melody[noteIdx % melody.length];
+                    if (freq > 0) {
+                        let osc = audioCtx.createOscillator();
+                        let gain = audioCtx.createGain();
+                        osc.type = 'square';
+                        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+                        
+                        gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+                        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.2);
+                        
+                        osc.connect(gain);
+                        gain.connect(audioCtx.destination);
+                        osc.start();
+                        osc.stop(audioCtx.currentTime + 0.2);
+                    }
                     noteIdx++;
                 } catch(e){}
-            }, 400);
+            }, 200);
         }
 
         function updateEngineAudio(currentSpeed) {
@@ -527,10 +559,10 @@
                 if (!audioCtx) return;
                 let osc = audioCtx.createOscillator();
                 let gain = audioCtx.createGain();
-                osc.type = 'square';
-                osc.frequency.setValueAtTime(110, audioCtx.currentTime);
-                osc.frequency.exponentialRampToValueAtTime(20, audioCtx.currentTime + 0.4);
-                gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(150, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(30, audioCtx.currentTime + 0.4);
+                gain.gain.setValueAtTime(0.4, audioCtx.currentTime);
                 gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
                 osc.connect(gain);
                 gain.connect(audioCtx.destination);
@@ -539,14 +571,15 @@
             } catch(e) {}
         }
 
-        // Flying Messages
+        // Flying Messages (More varied and cool)
         const giftList = [
-            { icon: "🎂", text: "Happy Birthday Safa! Wishing you endless success!" },
-            { icon: "🩺", text: "Dr. Safa in the making! AIIMS Delhi is waiting!" },
-            { icon: "🚘", text: "Queen driving her dream Black Thar in style!" },
-            { icon: "🎁", text: "Special Birthday Surprise Unlocking Soon!" },
-            { icon: "💖", text: "Keep shining bright! You're going to crack NEET!" }
+            { icon: "🎂", text: "Happy Birthday Safa! Rock your special day!" },
+            { icon: "🩺", text: "Future Rockstar in the making! AIIMS is waiting!" },
+            { icon: "🚘", text: "Queen driving her dream Black Thar in full swag!" },
+            { icon: "🔥", text: "Keep the hustle on! NEET is yours to crack!" },
+            { icon: "🌟", text: "You've got the spark, Safa! Keep shining!" }
         ];
+        const animClasses = ["anim-bounce", "anim-slide", "anim-zoom"];
 
         // Core Physics State
         let speed = 0;
@@ -558,7 +591,6 @@
         let inShowroom = true;
         let shakeTime = 0;
 
-        // Player Thar Position
         let tharX = 0; 
         let tharSpeedX = 0;
 
@@ -568,6 +600,7 @@
         let traffic = [];
         let fireworks = [];
         let aiimsZ = 1600;
+        let worldZ = 0; // Tracks player's absolute forward progress
 
         // Controls State
         const keys = { left: false, right: false, up: false, down: false, nitro: false };
@@ -602,28 +635,29 @@
         bindTouch('btnBrake', 'down');
         bindTouch('btnNitro', 'nitro');
 
-        // Highway Poles Setup
+        // Highway Poles
         for (let i = 0; i < 20; i++) {
-            streetLamps.push({ z: i * 80, side: i % 2 === 0 ? -1 : 1 });
+            streetLamps.push({ absZ: i * 80, side: i % 2 === 0 ? -1 : 1 });
         }
 
-        /* --- STRICT DISCIPLINED TRAFFIC SYSTEM --- */
+        /* --- STRICT DISCIPLINED TRAFFIC SYSTEM (INDEPENDENT MOVEMENT) --- */
         const vehicleModels = ['swift_white', 'superbike', 'sports_red', 'black_suv'];
-        const strictLanes = [-0.62, -0.20, 0.20, 0.62]; // Clear dedicated lanes
+        const strictLanes = [-0.62, -0.20, 0.20, 0.62]; 
 
-        function createTrafficVehicle(laneIndex) {
+        function createTrafficVehicle(laneIndex, zOffset) {
             let l = laneIndex !== undefined ? laneIndex : Math.floor(Math.random() * strictLanes.length);
             return {
                 lane: l,
                 x: strictLanes[l],
-                z: 800 + Math.random() * 700,
-                speed: 45 + Math.random() * 15, // Smooth forward moving speed
+                absZ: worldZ + zOffset, // independent absolute position
+                speed: 40 + Math.random() * 30, // Random constant speed (they move even if you stop)
                 type: vehicleModels[Math.floor(Math.random() * vehicleModels.length)]
             };
         }
 
+        // Initialize traffic far ahead
         for (let i = 0; i < 4; i++) {
-            traffic.push(createTrafficVehicle(i));
+            traffic.push(createTrafficVehicle(i, 600 + Math.random() * 800));
         }
 
         /* --- DRAW SHOWROOM 3D ROTATING THAR --- */
@@ -634,7 +668,6 @@
             let h = showroomCanvas.height;
             showCtx.clearRect(0, 0, w, h);
 
-            // Spotlight & Stage Pedestal
             let cx = w / 2;
             let cy = h / 2 + 40;
             
@@ -642,22 +675,23 @@
             showCtx.beginPath();
             showCtx.ellipse(cx, cy + 30, 160, 45, 0, 0, Math.PI * 2);
             showCtx.fill();
-
             showCtx.strokeStyle = "rgba(255, 215, 0, 0.4)";
             showCtx.lineWidth = 2;
             showCtx.stroke();
 
-            // Render Rotating Detailed Thar
             showCtx.save();
             showCtx.translate(cx, cy);
             
-            let scale = Math.cos(showroomAngle) * 0.2 + 0.9;
-            showCtx.scale(scale, Math.abs(scale));
+            // Proper 360 flip illusion without zoom in/out
+            let horizontalFlip = Math.cos(showroomAngle);
+            showCtx.scale(horizontalFlip, 1);
+            showCtx.scale(1.1, 1.1); // Fixed base scale
 
-            drawTharRear(0, 0, 1.2, true); // With "DR. SAFA" side graphics
+            // Pass true to show "SAFA" on sides when rotating
+            drawTharRear(0, 0, 1, true); 
             showCtx.restore();
 
-            showroomAngle += 0.02;
+            showroomAngle += 0.025; // Smooth rotation speed
             requestAnimationFrame(renderShowroom);
         }
         requestAnimationFrame(renderShowroom);
@@ -671,12 +705,12 @@
         }
 
         /* --- DRAW REALISTIC MAHINDRA THAR REAR VIEW --- */
-        function drawTharRear(x, y, scale, showSideName = false) {
+        function drawTharRear(x, y, scale, isShowroom = false) {
             ctx.save();
-            if(!inShowroom) ctx.translate(x, y);
+            if(!isShowroom) ctx.translate(x, y);
 
-            let targetCtx = inShowroom ? showCtx : ctx;
-            if(inShowroom) {
+            let targetCtx = isShowroom ? showCtx : ctx;
+            if(isShowroom) {
                 targetCtx.save();
                 targetCtx.translate(x, y);
             }
@@ -689,19 +723,17 @@
             targetCtx.ellipse(0, 38, 80, 18, 0, 0, Math.PI * 2);
             targetCtx.fill();
 
-            // Offroad Deep-Tread Tires
+            // Tires
             targetCtx.fillStyle = "#0a0a0a";
             targetCtx.fillRect(-82, -18, 26, 56); 
             targetCtx.fillRect(56, -18, 26, 56);  
-
-            // Tread Details
             targetCtx.fillStyle = "#262626";
             for(let t = -14; t < 32; t += 10) {
                 targetCtx.fillRect(-81, t, 24, 4);
                 targetCtx.fillRect(57, t, 24, 4);
             }
 
-            // Rugged Matte Black Body
+            // Body
             targetCtx.fillStyle = "#111827"; 
             targetCtx.beginPath();
             if (targetCtx.roundRect) {
@@ -711,13 +743,17 @@
             }
             targetCtx.fill();
 
-            // Gold Foil Side Aesthetic Badge "DR. SAFA"
-            targetCtx.fillStyle = "#ffd700";
-            targetCtx.font = "900 10px sans-serif";
-            targetCtx.textAlign = "center";
-            targetCtx.fillText("★ DR. SAFA ★", 0, -66);
+            // Side Graphics - Highlight SAFA Name during rotation
+            if (isShowroom) {
+                targetCtx.fillStyle = "#ffd700";
+                targetCtx.font = "900 12px sans-serif";
+                targetCtx.textAlign = "center";
+                // Draws SAFA on the sides
+                targetCtx.fillText("★ SAFA ★", -40, -30);
+                targetCtx.fillText("★ SAFA ★", 40, -30);
+            }
 
-            // Cabin Glass with Glass Reflection
+            // Cabin Glass
             targetCtx.fillStyle = "#0b1329";
             targetCtx.fillRect(-52, -52, 104, 36);
             targetCtx.fillStyle = "rgba(255,255,255,0.18)"; 
@@ -725,7 +761,7 @@
             targetCtx.moveTo(-46, -52); targetCtx.lineTo(-18, -52); targetCtx.lineTo(-34, -16); targetCtx.lineTo(-50, -16);
             targetCtx.fill();
 
-            // Stepney Back Spare Wheel
+            // Spare Wheel
             targetCtx.fillStyle = "#030712";
             targetCtx.beginPath(); targetCtx.arc(0, -6, 28, 0, Math.PI * 2); targetCtx.fill();
             targetCtx.strokeStyle = "#374151"; targetCtx.lineWidth = 4; targetCtx.stroke();
@@ -746,7 +782,7 @@
             targetCtx.fillStyle = "#ffd700"; targetCtx.font = "900 9px sans-serif"; targetCtx.textAlign = "center";
             targetCtx.fillText("SAFA'S THAR", 0, 31);
 
-            if(inShowroom) targetCtx.restore();
+            if(isShowroom) targetCtx.restore();
             ctx.restore();
         }
 
@@ -792,38 +828,56 @@
             ctx.restore();
         }
 
-        /* --- REALISTIC AIIMS TOWER LANDMARK --- */
+        /* --- REALISTIC AIIMS BUILDING --- */
         function drawAIIMSBuilding(x, y, scale) {
             ctx.save();
             ctx.translate(x, y);
             ctx.scale(scale, scale);
 
-            // Multi-Storey Tower Block
-            ctx.fillStyle = "#1e293b"; ctx.fillRect(-280, -360, 560, 360);
-            ctx.fillStyle = "#0f172a"; ctx.fillRect(-280, -360, 40, 360); ctx.fillRect(240, -360, 40, 360);
+            // Light Concrete Color base for real hospital look
+            ctx.fillStyle = "#e5e5e5"; 
+            ctx.fillRect(-320, -300, 640, 300);
 
-            // Lit Windows Grid
-            ctx.fillStyle = "#fde047";
-            for(let r = -330; r < -120; r += 32) {
-                for(let c = -230; c < 230; c += 38) {
-                    ctx.fillRect(c, r, 22, 18);
+            // Side Pillars/Wings
+            ctx.fillStyle = "#d4d4d8"; 
+            ctx.fillRect(-320, -300, 60, 300); 
+            ctx.fillRect(260, -300, 60, 300);
+
+            // Realistic Grid Windows
+            ctx.fillStyle = "#1e293b"; // Dark window glass
+            for(let r = -270; r < -100; r += 25) {
+                for(let c = -240; c < 240; c += 35) {
+                    ctx.fillRect(c, r, 20, 15);
                 }
             }
 
-            // AIIMS Signboard
-            ctx.fillStyle = "#020617"; ctx.fillRect(-240, -165, 480, 50);
-            ctx.strokeStyle = "#38bdf8"; ctx.lineWidth = 4; ctx.strokeRect(-240, -165, 480, 50);
+            // Greenery at bottom
+            ctx.fillStyle = "#15803d";
+            ctx.beginPath(); ctx.arc(-260, -20, 40, 0, Math.PI*2); ctx.fill();
+            ctx.beginPath(); ctx.arc(260, -20, 40, 0, Math.PI*2); ctx.fill();
 
-            // Red Cross Symbol
-            ctx.fillStyle = "#ef4444"; ctx.fillRect(-15, -155, 30, 30); ctx.fillRect(-25, -147, 50, 12);
+            // Massive AIIMS Signboard
+            ctx.fillStyle = "#0f172a"; ctx.fillRect(-260, -85, 520, 60);
+            ctx.strokeStyle = "#38bdf8"; ctx.lineWidth = 4; ctx.strokeRect(-260, -85, 520, 60);
 
-            ctx.fillStyle = "#ffffff"; ctx.font = "900 16px Arial"; ctx.textAlign = "center";
-            ctx.fillText("ALL INDIA INSTITUTE OF MEDICAL SCIENCES", 0, -125);
+            // Medical Cross
+            ctx.fillStyle = "#ef4444"; 
+            ctx.fillRect(-15, -75, 30, 30); 
+            ctx.fillRect(-25, -65, 50, 10);
+
+            // Text
+            ctx.fillStyle = "#ffffff"; 
+            ctx.font = "900 18px Arial"; 
+            ctx.textAlign = "center";
+            ctx.fillText("ALL INDIA INSTITUTE OF MEDICAL SCIENCES", 0, -35);
+            ctx.fillStyle = "#fde047";
+            ctx.font = "bold 12px Arial";
+            ctx.fillText("NEW DELHI", 0, -20);
 
             ctx.restore();
         }
 
-        // Trigger Gift Popups
+        // Trigger Gift Popups Dynamically
         let lastGiftTime = 0;
         function triggerGiftPopup() {
             const now = Date.now();
@@ -831,22 +885,30 @@
                 lastGiftTime = now;
                 const pop = document.getElementById("flyingMsg");
                 const item = giftList[Math.floor(Math.random() * giftList.length)];
+                
+                // Reset Classes
+                pop.className = "";
+                // Force reflow to restart animation
+                void pop.offsetWidth; 
+                
                 document.getElementById("popIcon").innerText = item.icon;
                 document.getElementById("popMsg").innerText = item.text;
-                pop.classList.add("active");
-                setTimeout(() => { pop.classList.remove("active"); }, 3000);
+                
+                // Add random animation
+                const randomAnim = animClasses[Math.floor(Math.random() * animClasses.length)];
+                pop.classList.add(randomAnim);
             }
         }
 
         // Firework Particle Engine
         function triggerFireworks() {
-            for (let i = 0; i < 35; i++) {
+            for (let i = 0; i < 40; i++) {
                 fireworks.push({
                     x: Math.random() * canvas.width,
                     y: Math.random() * canvas.height * 0.5,
-                    vx: (Math.random() - 0.5) * 6,
-                    vy: (Math.random() - 0.5) * 6,
-                    color: ['#ffd700', '#ff2a5f', '#00b09b', '#38bdf8'][Math.floor(Math.random()*4)],
+                    vx: (Math.random() - 0.5) * 8,
+                    vy: (Math.random() - 0.5) * 8,
+                    color: ['#ffd700', '#ff2a5f', '#0ea5e9', '#10b981'][Math.floor(Math.random()*4)],
                     alpha: 1
                 });
             }
@@ -854,7 +916,7 @@
 
         function drawFireworks() {
             fireworks.forEach((p, idx) => {
-                p.x += p.vx; p.y += p.vy; p.alpha -= 0.02;
+                p.x += p.vx; p.y += p.vy; p.alpha -= 0.015;
                 ctx.fillStyle = p.color; ctx.globalAlpha = Math.max(0, p.alpha);
                 ctx.beginPath(); ctx.arc(p.x, p.y, 4, 0, Math.PI * 2); ctx.fill();
                 ctx.globalAlpha = 1;
@@ -896,7 +958,6 @@
         function update() {
             if (!gameActive && shakeTime <= 0) return;
 
-            // Camera Shake Effect
             ctx.save();
             if (shakeTime > 0) {
                 let dx = (Math.random() - 0.5) * 12;
@@ -905,7 +966,7 @@
                 shakeTime--;
             }
 
-            // Steering & Speed Physics
+            // Speed Control
             let currentMaxSpeed = keys.nitro ? maxSpeed * 1.25 : maxSpeed;
             if (keys.up || keys.nitro) {
                 speed += accel * (keys.nitro ? 1.4 : 1.0);
@@ -932,7 +993,11 @@
             if (tharX < -0.78) tharX = -0.78;
             if (tharX > 0.78) tharX = 0.78;
 
-            // Calibrated Distance Countdown
+            // Update World Forward Progress (Absolute Player Position)
+            let speedDelta = speed * 0.16;
+            worldZ += speedDelta;
+
+            // Distance Countdown
             if (speed > 0) {
                 distanceLeft -= (speed / 36000); 
                 if (distanceLeft <= 0) distanceLeft = 0;
@@ -942,47 +1007,39 @@
             document.getElementById("speedVal").innerText = Math.round(speed);
             document.getElementById("distVal").innerText = distanceLeft.toFixed(1);
 
-            // Elevated Horizon Pitch View
             let horizonY = canvas.height * 0.46; 
 
-            // Dark Night Horizon Gradient
+            // Sky
             let skyGrad = ctx.createLinearGradient(0, 0, 0, horizonY);
             skyGrad.addColorStop(0, '#020617');
             skyGrad.addColorStop(1, '#0f172a');
             ctx.fillStyle = skyGrad;
             ctx.fillRect(0, 0, canvas.width, horizonY);
-
-            // Moon
             ctx.fillStyle = "#f8fafc"; ctx.beginPath();
             ctx.arc(canvas.width * 0.82, horizonY - 50, 20, 0, Math.PI * 2); ctx.fill();
 
-            // Pseudo 3D Curved Highway Road
-            roadOffset += speed * 0.16;
+            // Pseudo 3D Road
+            roadOffset = worldZ;
             let roadTopW = 35;
             let roadBottomW = canvas.width * 0.92;
 
-            // Side Grass Terrain
             ctx.fillStyle = "#022c22";
             ctx.fillRect(0, horizonY, canvas.width, canvas.height - horizonY);
 
-            // Main Highway Asphalt Track
             ctx.fillStyle = "#1e293b";
             ctx.beginPath();
             ctx.moveTo(canvas.width / 2 - roadTopW / 2, horizonY);
             ctx.lineTo(canvas.width / 2 + roadTopW / 2, horizonY);
             ctx.lineTo(canvas.width / 2 + roadBottomW / 2, canvas.height);
             ctx.lineTo(canvas.width / 2 - roadBottomW / 2, canvas.height);
-            ctx.closePath();
-            ctx.fill();
+            ctx.closePath(); ctx.fill();
 
-            // Side Metal Safety Barriers
             ctx.strokeStyle = "#ffd700"; ctx.lineWidth = 4;
             ctx.beginPath();
             ctx.moveTo(canvas.width / 2 - roadTopW / 2, horizonY); ctx.lineTo(canvas.width / 2 - roadBottomW / 2, canvas.height);
             ctx.moveTo(canvas.width / 2 + roadTopW / 2, horizonY); ctx.lineTo(canvas.width / 2 + roadBottomW / 2, canvas.height);
             ctx.stroke();
 
-            // Dashed Lane Lines
             ctx.strokeStyle = "#f8fafc"; ctx.lineWidth = 3;
             ctx.setLineDash([16, 16]);
             ctx.lineDashOffset = -roadOffset % 32;
@@ -993,28 +1050,29 @@
 
             // Highway Poles
             streetLamps.forEach(lamp => {
-                lamp.z -= speed * 0.22;
-                if (lamp.z <= 0) lamp.z += 1000;
+                let relativeZ = lamp.absZ - worldZ;
+                if (relativeZ < 0) lamp.absZ += 1000; // Recycle to horizon
 
-                let scale = 1 / (lamp.z * 0.0018 + 1);
-                let x = canvas.width / 2 + lamp.side * (roadBottomW / 2 + 35) * scale;
-                let y = horizonY + (canvas.height - horizonY) * scale;
-
-                ctx.fillStyle = "#ffd700"; ctx.beginPath(); ctx.arc(x, y - 25 * scale, 5 * scale, 0, Math.PI * 2); ctx.fill();
+                if (relativeZ > 0 && relativeZ < 1000) {
+                    let scale = 1 / (relativeZ * 0.0018 + 1);
+                    let x = canvas.width / 2 + lamp.side * (roadBottomW / 2 + 35) * scale;
+                    let y = horizonY + (canvas.height - horizonY) * scale;
+                    ctx.fillStyle = "#ffd700"; ctx.beginPath(); ctx.arc(x, y - 25 * scale, 5 * scale, 0, Math.PI * 2); ctx.fill();
+                }
             });
 
-            // REALISTIC AIIMS APPROACH (When distance <= 0.8 KM)
+            // REALISTIC AIIMS APPROACH
             if (distanceLeft <= 0.8) {
-                aiimsZ -= speed * 0.18;
-                if (aiimsZ < 110) aiimsZ = 110;
+                let relAiimsZ = aiimsZ - worldZ;
+                if (relAiimsZ < 110) relAiimsZ = 110;
 
-                let scale = 1 / (aiimsZ * 0.0014 + 1);
+                let scale = 1 / (relAiimsZ * 0.0014 + 1);
                 let bX = canvas.width / 2;
-                let bY = horizonY + (canvas.height - horizonY) * scale * 0.72;
+                let bY = horizonY + (canvas.height - horizonY) * scale * 0.65;
 
                 drawAIIMSBuilding(bX, bY, scale);
 
-                if (distanceLeft <= 0 && aiimsZ <= 120) {
+                if (distanceLeft <= 0 && relAiimsZ <= 120) {
                     gameActive = false;
                     setTimeout(() => {
                         document.getElementById("secretLockScreen").classList.add("active");
@@ -1022,36 +1080,44 @@
                 }
             }
 
-            // STRICT DISCIPLINED HIGHWAY TRAFFIC
+            // INDEPENDENT TRAFFIC SYSTEM
             traffic.forEach((car, index) => {
-                let relativeSpeed = speed - car.speed;
-                car.z -= relativeSpeed * 0.15;
+                // Car moves forward at its OWN speed independently!
+                car.absZ += car.speed * 0.16;
 
-                // Collision Detection with Player Thar
-                if (car.z < 110 && car.z > 30 && Math.abs(car.x - tharX) < 0.20) {
+                // Relative Z distance from player to car
+                let relativeZ = car.absZ - worldZ;
+
+                // Collision Check
+                if (relativeZ < 110 && relativeZ > 30 && Math.abs(car.x - tharX) < 0.20) {
                     triggerCrash();
                 }
 
-                if (car.z <= 10) {
-                    traffic[index] = createTrafficVehicle(car.lane);
+                // If player overtakes car completely
+                if (relativeZ < -20) {
+                    traffic[index] = createTrafficVehicle(car.lane, 1500); 
                     triggerGiftPopup();
-                } else if (car.z > 1500) {
-                    car.z = 1500;
+                } 
+                // If car overtakes player and drives out of sight (to the horizon)
+                else if (relativeZ > 1500) {
+                    traffic[index] = createTrafficVehicle(car.lane, -50); // Spawn back behind player to come again
                 }
 
-                let scale = 1 / (car.z * 0.0015 + 1);
-                let carXPos = canvas.width / 2 + (car.x * roadBottomW / 2) * scale;
-                let carYPos = horizonY + (canvas.height - horizonY) * scale * 0.85;
+                // Render if in view
+                if (relativeZ > 0 && relativeZ < 1500) {
+                    let scale = 1 / (relativeZ * 0.0015 + 1);
+                    let carXPos = canvas.width / 2 + (car.x * roadBottomW / 2) * scale;
+                    let carYPos = horizonY + (canvas.height - horizonY) * scale * 0.85;
 
-                drawVehicle(carXPos, carYPos, scale * 0.8, car.type);
+                    drawVehicle(carXPos, carYPos, scale * 0.8, car.type);
+                }
             });
 
-            // Draw Player Thar Elevating Screen View Position (Shifted Upwards)
+            // Player Thar View
             let tharCanvasX = canvas.width / 2 + (tharX * (roadBottomW / 2.3));
             let tharCanvasY = canvas.height - 135; 
-            drawTharRear(tharCanvasX, tharCanvasY, 0.88);
+            drawTharRear(tharCanvasX, tharCanvasY, 0.88, false);
 
-            // Celebration Fireworks
             drawFireworks();
 
             ctx.restore();
@@ -1063,4 +1129,3 @@
     </script>
 </body>
 </html>
-
