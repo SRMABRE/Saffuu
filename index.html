@@ -109,7 +109,7 @@
         #crashModal {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(180, 0, 0, 0.8);
+            background: rgba(180, 0, 0, 0.85);
             backdrop-filter: blur(8px);
             display: flex;
             flex-direction: column;
@@ -162,6 +162,7 @@
         .d-pad {
             display: flex;
             gap: 15px;
+            align-items: center;
         }
 
         .btn-ctrl {
@@ -179,6 +180,7 @@
             font-weight: bold;
             box-shadow: 0 8px 20px rgba(0,0,0,0.5);
             touch-action: manipulation;
+            cursor: pointer;
         }
 
         .btn-ctrl:active {
@@ -201,6 +203,15 @@
             width: 60px;
             height: 65px;
             border: none;
+        }
+
+        .btn-nitro {
+            background: linear-gradient(180deg, #3b82f6, #1d4ed8);
+            border-radius: 50%;
+            width: 55px;
+            height: 55px;
+            border: none;
+            font-size: 18px;
         }
 
         /* Secret Lock Keypad Overlay Screen */
@@ -343,6 +354,7 @@
                 <div class="btn-ctrl" id="btnRight">►</div>
             </div>
             <div class="d-pad" style="align-items: flex-end;">
+                <div class="btn-ctrl btn-nitro" id="btnNitro">🚀</div>
                 <div class="btn-ctrl pedal-brake" id="btnBrake">🛑</div>
                 <div class="btn-ctrl pedal-gas" id="btnGas">⚡</div>
             </div>
@@ -352,12 +364,12 @@
         <div id="secretLockScreen">
             <div class="lock-box">
                 <h2 style="color: #ffd700; font-size: 22px;">🔐 AIIMS GATE SECURITY</h2>
-                <p style="font-size: 13px; color: #94a3b8; margin-top: 6px;">Enter Safa's Thar Number Plate Code to Unlock Special Birthday Surprise!</p>
+                <p style="font-size: 13px; color: #94a3b8; margin-top: 6px;">Enter Safa's Thar Code (e.g., 0055, 0001, or 7777) to Unlock Special Birthday Surprise!</p>
                 
                 <input type="text" id="passInput" class="lock-input" placeholder="0055" maxlength="10">
                 <br>
                 <button class="unlock-btn" onclick="verifySecretCode()">UNLOCK SURPRISE 🎁</button>
-                <p id="lockErr" style="color: #ef4444; font-size: 12px; margin-top: 10px; display: none;">Wrong Number Plate Code! Try again.</p>
+                <p id="lockErr" style="color: #ef4444; font-size: 12px; margin-top: 10px; display: none;">Please enter code to continue!</p>
             </div>
         </div>
 
@@ -394,6 +406,27 @@
         window.addEventListener('resize', resizeCanvas);
         resizeCanvas();
 
+        // Audio Effects via Web Audio API
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        let audioCtx = null;
+
+        function playCrashSound() {
+            try {
+                if (!audioCtx) audioCtx = new AudioCtx();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(120, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(30, audioCtx.currentTime + 0.4);
+                gain.gain.setValueAtTime(0.5, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.4);
+            } catch(e) {}
+        }
+
         // Flying Birthday Wishes
         const giftList = [
             { icon: "🎂", text: "Happy Birthday Safa! May all your dreams come true!" },
@@ -408,8 +441,9 @@
         let maxSpeed = 120;
         let accel = 0.5;
         let decal = 0.25;
-        let distanceLeft = 5.0; // 5.0 KM (Calibrated to exactly ~2 mins)
+        let distanceLeft = 5.0; // 5.0 KM (Calibrated to ~2 mins at full speed)
         let gameActive = true;
+        let shakeTime = 0;
 
         // Player Thar Coordinates
         let tharX = 0; 
@@ -423,13 +457,14 @@
         let aiimsZ = 1500; // Distance to AIIMS Building Tower
 
         // Key bindings
-        const keys = { left: false, right: false, up: false, down: false };
+        const keys = { left: false, right: false, up: false, down: false, nitro: false };
 
         window.addEventListener('keydown', e => {
             if (e.key === "ArrowLeft" || e.key === "a") keys.left = true;
             if (e.key === "ArrowRight" || e.key === "d") keys.right = true;
             if (e.key === "ArrowUp" || e.key === "w") keys.up = true;
             if (e.key === "ArrowDown" || e.key === "s") keys.down = true;
+            if (e.key === "Shift" || e.key === " ") keys.nitro = true;
         });
 
         window.addEventListener('keyup', e => {
@@ -437,17 +472,22 @@
             if (e.key === "ArrowRight" || e.key === "d") keys.right = false;
             if (e.key === "ArrowUp" || e.key === "w") keys.up = false;
             if (e.key === "ArrowDown" || e.key === "s") keys.down = false;
+            if (e.key === "Shift" || e.key === " ") keys.nitro = false;
         });
 
         const bindTouch = (id, key) => {
             const el = document.getElementById(id);
+            if (!el) return;
             el.addEventListener('touchstart', (e) => { e.preventDefault(); keys[key] = true; });
             el.addEventListener('touchend', (e) => { e.preventDefault(); keys[key] = false; });
+            el.addEventListener('mousedown', () => { keys[key] = true; });
+            el.addEventListener('mouseup', () => { keys[key] = false; });
         };
         bindTouch('btnLeft', 'left');
         bindTouch('btnRight', 'right');
         bindTouch('btnGas', 'up');
         bindTouch('btnBrake', 'down');
+        bindTouch('btnNitro', 'nitro');
 
         // Init Highway Lights
         for (let i = 0; i < 20; i++) {
@@ -462,7 +502,7 @@
             return {
                 x: lanes[Math.floor(Math.random() * lanes.length)],
                 z: 800 + Math.random() * 600,
-                baseSpeed: 40 + Math.random() * 30, // Absolute speed on highway
+                speed: 35 + Math.random() * 30, // Absolute independent forward speed
                 type: vehicleModels[Math.floor(Math.random() * vehicleModels.length)]
             };
         }
@@ -513,7 +553,11 @@
             // Rugged Matte Black Body Shell
             ctx.fillStyle = "#121212"; 
             ctx.beginPath();
-            ctx.roundRect(-66, -58, 132, 84, 8);
+            if (ctx.roundRect) {
+                ctx.roundRect(-66, -58, 132, 84, 8);
+            } else {
+                ctx.rect(-66, -58, 132, 84);
+            }
             ctx.fill();
 
             // Roof Rack Rail Bar
@@ -564,26 +608,50 @@
             ctx.scale(scale, scale);
 
             if (type === 'superbike') {
-                // Real Superbike
-                ctx.fillStyle = "#000"; ctx.fillRect(-5, -8, 10, 36); // Rear Fat Tire
-                ctx.fillStyle = "#ea580c"; ctx.fillRect(-14, -22, 28, 18); // Rider Jacket
-                ctx.fillStyle = "#111"; ctx.beginPath(); ctx.arc(0, -28, 9, 0, Math.PI*2); ctx.fill(); // Helmet
-                ctx.fillStyle = "#ef4444"; ctx.fillRect(-4, -4, 8, 5); // LED Tail Light
+                // Real Superbike with Detailed Rider
+                ctx.fillStyle = "#000"; ctx.fillRect(-6, -10, 12, 40); // Fat Rear Tire
+                ctx.fillStyle = "#111"; ctx.fillRect(-18, -12, 36, 6); // Handlebars
+                ctx.fillStyle = "#ea580c"; ctx.fillRect(-14, -26, 28, 20); // Rider Jacket
+                ctx.fillStyle = "#000"; ctx.beginPath(); ctx.arc(0, -32, 9, 0, Math.PI*2); ctx.fill(); // Helmet
+                ctx.fillStyle = "#38bdf8"; ctx.fillRect(-6, -34, 12, 4); // Helmet Visor
+                ctx.fillStyle = "#ef4444"; ctx.fillRect(-4, -2, 8, 5); // LED Tail Light
             } else if (type === 'swift_white') {
-                // White Maruti Swift
-                ctx.fillStyle = "#f1f5f9"; ctx.beginPath(); ctx.roundRect(-38, -36, 76, 54, 8); ctx.fill();
-                ctx.fillStyle = "#0f172a"; ctx.fillRect(-30, -30, 60, 22); // Glass
-                ctx.fillStyle = "#ef4444"; ctx.fillRect(-34, 8, 10, 8); ctx.fillRect(24, 8, 10, 8); // Lights
+                // Detailed White Hatchback (Swift)
+                ctx.fillStyle = "#e2e8f0"; 
+                ctx.beginPath();
+                if(ctx.roundRect) ctx.roundRect(-38, -36, 76, 54, 8); else ctx.rect(-38, -36, 76, 54);
+                ctx.fill();
+                // Roof & Window Defogger Lines
+                ctx.fillStyle = "#0f172a"; ctx.fillRect(-30, -30, 60, 22);
+                ctx.strokeStyle = "#ff4d4d"; ctx.lineWidth = 1;
+                for(let l = -26; l < -10; l += 5) {
+                    ctx.beginPath(); ctx.moveTo(-26, l); ctx.lineTo(26, l); ctx.stroke();
+                }
+                // Side Mirrors & Tail Lights
+                ctx.fillStyle = "#cbd5e1"; ctx.fillRect(-44, -22, 6, 10); ctx.fillRect(38, -22, 6, 10);
+                ctx.fillStyle = "#ef4444"; ctx.fillRect(-34, 8, 10, 8); ctx.fillRect(24, 8, 10, 8);
+                ctx.fillStyle = "#333"; ctx.fillRect(-16, 10, 32, 6); // Bumper
             } else if (type === 'sports_red') {
-                // Red Sports Coupe
-                ctx.fillStyle = "#b91c1c"; ctx.beginPath(); ctx.roundRect(-42, -28, 84, 46, 5); ctx.fill();
-                ctx.fillStyle = "#020617"; ctx.fillRect(-32, -24, 64, 18); // Dark windshield
-                ctx.fillStyle = "#ff0000"; ctx.fillRect(-38, 8, 14, 5); ctx.fillRect(24, 8, 14, 5);
+                // Metallic Red Sports Coupe
+                ctx.fillStyle = "#b91c1c";
+                ctx.beginPath();
+                if(ctx.roundRect) ctx.roundRect(-42, -28, 84, 46, 6); else ctx.rect(-42, -28, 84, 46);
+                ctx.fill();
+                ctx.fillStyle = "#020617"; ctx.fillRect(-32, -24, 64, 18); // Windshield
+                ctx.fillStyle = "#ff0000"; ctx.shadowColor = "#ff0000"; ctx.shadowBlur = 8;
+                ctx.fillRect(-38, 8, 14, 5); ctx.fillRect(24, 8, 14, 5);
+                ctx.shadowBlur = 0;
+                // Dual Exhausts
+                ctx.fillStyle = "#94a3b8"; ctx.beginPath(); ctx.arc(-20, 18, 3, 0, Math.PI*2); ctx.arc(20, 18, 3, 0, Math.PI*2); ctx.fill();
             } else {
                 // Black Luxury SUV
-                ctx.fillStyle = "#020617"; ctx.beginPath(); ctx.roundRect(-42, -42, 84, 62, 8); ctx.fill();
-                ctx.fillStyle = "#1e293b"; ctx.fillRect(-32, -36, 64, 26);
+                ctx.fillStyle = "#0f172a";
+                ctx.beginPath();
+                if(ctx.roundRect) ctx.roundRect(-42, -42, 84, 62, 8); else ctx.rect(-42, -42, 84, 62);
+                ctx.fill();
+                ctx.fillStyle = "#1e293b"; ctx.fillRect(-34, -36, 68, 26);
                 ctx.fillStyle = "#dc2626"; ctx.fillRect(-38, 10, 12, 10); ctx.fillRect(26, 10, 12, 10);
+                ctx.fillStyle = "#475569"; ctx.fillRect(-38, -46, 76, 4); // Roof Rails
             }
 
             ctx.restore();
@@ -612,6 +680,12 @@
                     ctx.fillRect(c, r, 22, 18);
                 }
             }
+
+            // Helipad Structure on Roof
+            ctx.fillStyle = "#334155"; ctx.fillRect(-80, -390, 160, 30);
+            ctx.strokeStyle = "#ffd700"; ctx.lineWidth = 3; ctx.strokeRect(-70, -385, 140, 20);
+            ctx.fillStyle = "#ef4444"; ctx.font = "bold 14px Arial"; ctx.textAlign = "center";
+            ctx.fillText("H", 0, -370);
 
             // Emergency Main Entrance Canopy Gate
             ctx.fillStyle = "#0284c7";
@@ -663,7 +737,10 @@
 
         // Crash Collision Event
         function triggerCrash() {
+            if (!gameActive) return;
             gameActive = false;
+            shakeTime = 15;
+            playCrashSound();
             document.getElementById("crashModal").classList.add("active");
         }
 
@@ -690,12 +767,22 @@
 
         // Main Render Loop
         function update() {
-            if (!gameActive) return;
+            if (!gameActive && shakeTime <= 0) return;
 
-            // Physics Steering & Acceleration
-            if (keys.up) {
-                speed += accel;
-                if (speed > maxSpeed) speed = maxSpeed;
+            // Handle Camera Shake
+            ctx.save();
+            if (shakeTime > 0) {
+                let dx = (Math.random() - 0.5) * 15;
+                let dy = (Math.random() - 0.5) * 15;
+                ctx.translate(dx, dy);
+                shakeTime--;
+            }
+
+            // Physics Steering & Acceleration (with Nitro Support)
+            let currentMaxSpeed = keys.nitro ? maxSpeed * 1.25 : maxSpeed;
+            if (keys.up || keys.nitro) {
+                speed += accel * (keys.nitro ? 1.5 : 1.0);
+                if (speed > currentMaxSpeed) speed = currentMaxSpeed;
             } else if (keys.down) {
                 speed -= accel * 2;
                 if (speed < 0) speed = 0;
@@ -716,7 +803,7 @@
             if (tharX < -0.80) tharX = -0.80;
             if (tharX > 0.80) tharX = 0.80;
 
-            // Exact ~2 Minutes Distance Countdown (5.0 KM @ ~100 km/h)
+            // Calibrated Distance Countdown (5.0 KM over ~2 mins at max speed)
             if (speed > 0) {
                 distanceLeft -= (speed / 36000); 
                 if (distanceLeft <= 0) distanceLeft = 0;
@@ -796,18 +883,18 @@
                 }
             }
 
-            // INDEPENDENT TRAFFIC SYSTEM (Moves regardless of Thar speed!)
+            // INDEPENDENT TRAFFIC SYSTEM (Moves on highway regardless of Thar speed!)
             traffic.forEach((car, index) => {
-                // Independent Movement Formula: Traffic moves forward relative to road
-                let relativeSpeed = speed - car.baseSpeed;
+                // Independent Movement Formula: relative speed difference determines visual z-progression
+                let relativeSpeed = speed - car.speed;
                 car.z -= relativeSpeed * 0.15;
 
-                // REAL CRASH COLLISION CHECK
-                if (car.z < 110 && car.z > 40 && Math.abs(car.x - tharX) < 0.22) {
+                // CRASH COLLISION CHECK WITH THAR
+                if (car.z < 120 && car.z > 35 && Math.abs(car.x - tharX) < 0.22) {
                     triggerCrash();
                 }
 
-                // Recycle Cars
+                // Cycle traffic cars cleanly
                 if (car.z <= 10) {
                     traffic[index] = createTrafficVehicle();
                     triggerGiftPopup();
@@ -830,7 +917,11 @@
             // Draw Celebration Fireworks
             drawFireworks();
 
-            requestAnimationFrame(update);
+            ctx.restore();
+
+            if (gameActive) {
+                requestAnimationFrame(update);
+            }
         }
 
         // Run Engine
