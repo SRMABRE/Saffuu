@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drive to AIIMS Delhi 🩺🚙</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body, html {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: #1a1a1a;
+        }
+
+        /* Screens */
+        .screen {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #1f4068, #162447);
+            color: white;
+            z-index: 10;
+            transition: opacity 0.5s ease;
+        }
+
+        .hidden {
+            opacity: 0;
+            pointer-events: none;
+            display: none !important;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #e43f5a;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            text-align: center;
+            max-width: 600px;
+            padding: 0 20px;
+        }
+
+        input {
+            padding: 12px 20px;
+            font-size: 1.1rem;
+            border-radius: 30px;
+            border: none;
+            outline: none;
+            margin-bottom: 20px;
+            text-align: center;
+            width: 280px;
+        }
+
+        button {
+            padding: 12px 30px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            background: #e43f5a;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(228, 63, 90, 0.4);
+        }
+
+        button:hover {
+            background: #ff4757;
+            transform: scale(1.05);
+        }
+
+        /* Game Arena */
+        #game-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background: #2c3e50;
+            overflow: hidden;
+        }
+
+        /* Road */
+        .road {
+            position: absolute;
+            width: 60%;
+            height: 100%;
+            left: 20%;
+            background: #34495e;
+            border-left: 10px dashed #f1c40f;
+            border-right: 10px dashed #f1c40f;
+        }
+
+        @media(max-width: 768px) {
+            .road {
+                width: 90%;
+                left: 5%;
+            }
+        }
+
+        /* Moving Scenery / Milestone Banner */
+        .milestone {
+            position: absolute;
+            left: 22%;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #fff;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 8px 15px;
+            border-radius: 8px;
+            border: 2px solid #e43f5a;
+            white-space: nowrap;
+            z-index: 2;
+        }
+
+        /* Thar Car */
+        #thar {
+            position: absolute;
+            bottom: 30px;
+            left: 45%;
+            width: 80px;
+            height: 140px;
+            background: #b91c1c;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 5;
+            transition: transform 0.1s linear;
+        }
+
+        /* Car details styling */
+        .car-roof {
+            width: 70px;
+            height: 50px;
+            background: #111;
+            border-radius: 8px;
+            margin-top: -10px;
+        }
+
+        .car-nameplate {
+            background: white;
+            color: black;
+            font-size: 0.65rem;
+            font-weight: bold;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-top: 15px;
+            letter-spacing: 1px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        /* HUD / Scoreboard */
+        #hud {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(0,0,0,0.7);
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            color: #f1c40f;
+            z-index: 8;
+            font-weight: bold;
+        }
+
+        /* Controls for mobile */
+        .controls {
+            position: absolute;
+            bottom: 20px;
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+            padding: 0 40px;
+            z-index: 8;
+        }
+
+        .ctrl-btn {
+            background: rgba(255, 255, 255, 0.3);
+            border: 2px solid white;
+            color: white;
+            font-size: 1.5rem;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            user-select: none;
+        }
+
+        /* Victory Screen */
+        #victory-screen {
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Step 1: Welcome & Name Input Screen -->
+    <div id="welcome-screen" class="screen">
+        <h1>🚗 The Dream Drive to AIIMS 🩺</h1>
+        <p>Aapke liye ek chhota sa safar, aapke bade sapne tak! Pehle apna naam batayein:</p>
+        <input type="text" id="username" placeholder="Enter Name here..." autocomplete="off">
+        <button onclick="startGame()">Start Journey 🚀</button>
+    </div>
+
+    <!-- Step 2: Driving Game Screen -->
+    <div id="game-container" class="hidden">
+        <div id="hud">Distance to AIIMS: <span id="distance">100</span>%</div>
+        <div class="road"></div>
+        
+        <!-- Moving milestones will be injected here via JS -->
+        <div id="milestone-box"></div>
+
+        <!-- The Thar -->
+        <div id="thar">
+            <div class="car-roof"></div>
+            <div class="car-nameplate" id="plate-text">THAR</div>
+        </div>
+
+        <!-- Mobile Controls -->
+        <div class="controls">
+            <div class="ctrl-btn" ontouchstart="moveLeft()" onmousedown="moveLeft()">◀</div>
+            <div class="ctrl-btn" ontouchstart="moveRight()" onmousedown="moveRight()">▶</div>
+        </div>
+    </div>
+
+    <!-- Step 3: Victory / AIIMS Reached Screen -->
+    <div id="victory-screen" class="screen hidden">
+        <h1>🎉 Destination Reached: AIIMS Delhi! 🏥</h1>
+        <p id="victory-msg">Badhai ho! Aapne apna dream Thar drive kiya aur AIIMS Delhi tak ka safar tay kiya. Aapka NEET crack karna ab bas waqt ki baat hai, Doctor Sahiba! ✨</p>
+        <button onclick="restartGame()">Wapas Chalein 🔄</button>
+    </div>
+
+    <script>
+        let playerName = "";
+        let carX = window.innerWidth / 2 - 40;
+        const thar = document.getElementById("thar");
+        let gameInterval;
+        let distanceLeft = 100;
+        let isPlaying = false;
+
+        function startGame() {
+            const input = document.getElementById("username").value.trim();
+            if(input === "") {
+                alert("Pehle naam toh likhiye! 😊");
+                return;
+            }
+            playerName = input;
+            document.getElementById("plate-text").innerText = playerName.toUpperCase();
+            
+            // Switch screens
+            document.getElementById("welcome-screen").classList.add("hidden");
+            document.getElementById("game-container").classList.remove("hidden");
+            
+            isPlaying = true;
+            startJourneyProgress();
+        }
+
+        // Keyboard controls
+        window.addEventListener('keydown', (e) => {
+            if (!isPlaying) return;
+            const roadLeft = window.innerWidth * 0.2;
+            const roadRight = window.innerWidth * 0.8 - 80;
+
+            if (e.key === 'ArrowLeft' || e.key === 'a') {
+                carX = Math.max(roadLeft, carX - 30);
+            } else if (e.key === 'ArrowRight' || e.key === 'd') {
+                carX = Math.min(roadRight, carX + 30);
+            }
+            thar.style.left = carX + 'px';
+        });
+
+        // Touch/Click controls for mobile
+        function moveLeft() {
+            if (!isPlaying) return;
+            const roadLeft = window.innerWidth * 0.2;
+            carX = Math.max(roadLeft, carX - 40);
+            thar.style.left = carX + 'px';
+        }
+
+        function moveRight() {
+            if (!isPlaying) return;
+            const roadRight = window.innerWidth * 0.8 - 80;
+            carX = Math.min(roadRight, carX + 40);
+            thar.style.left = carX + 'px';
+        }
+
+        function startJourneyProgress() {
+            distanceLeft = 100;
+            const distanceSpan = document.getElementById("distance");
+            
+            gameInterval = setInterval(() => {
+                distanceLeft -= 1;
+                distanceSpan.innerText = distanceLeft;
+
+                if (distanceLeft <= 0) {
+                    clearInterval(gameInterval);
+                    endGame();
+                }
+            }, 300); // 30 seconds total drive time
+        }
+
+        function endGame() {
+            isPlaying = false;
+            document.getElementById("game-container").classList.add("hidden");
+            document.getElementById("victory-screen").classList.remove("hidden");
+            document.getElementById("victory-msg").innerText = `${playerName}, aapne apni dream Thar se AIIMS Delhi tak ka safar kamyabi se poora kar liya hai! NEET crack karke white coat pehne ka sapna ab sach hone wala hai. All the best, Future Doctor! 🩺✨`;
+        }
+
+        function restartGame() {
+            location.reload();
+        }
+    </script>
+</body>
+</html>
+
