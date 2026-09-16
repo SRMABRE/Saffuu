@@ -72,7 +72,7 @@
             margin-top: 2px;
         }
 
-        /* Showroom / Preview Overlay Screen */
+        /* Showroom Screen */
         #showroomOverlay {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -118,7 +118,7 @@
             transform: scale(0.95);
         }
 
-        /* Floating Gifts Popup */
+        /* Dynamic Popups */
         #flyingMsg {
             position: absolute;
             top: 22%;
@@ -176,7 +176,7 @@
             line-height: 1.4;
         }
 
-        /* Crash Alert Modal */
+        /* Crash Alert */
         #crashModal {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -287,7 +287,7 @@
             font-size: 18px;
         }
 
-        /* Secret Lock Keypad Overlay Screen */
+        /* Secret Lock Overlay */
         #secretLockScreen {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -348,12 +348,12 @@
             box-shadow: 0 5px 20px rgba(255, 42, 95, 0.4);
         }
 
-        /* BEAUTIFUL ANIMATED BIRTHDAY CELEBRATION MODAL */
+        /* Grand Birthday Message Card */
         #finalBirthdayModal {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(2, 6, 23, 0.96);
-            backdrop-filter: blur(20px);
+            background: rgba(2, 6, 23, 0.97);
+            backdrop-filter: blur(25px);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -361,10 +361,11 @@
             z-index: 50;
             opacity: 0;
             pointer-events: none;
-            transition: opacity 1.5s ease;
+            transition: opacity 1s ease;
             color: white;
             text-align: center;
             padding: 20px;
+            overflow-y: auto;
         }
 
         #finalBirthdayModal.active {
@@ -372,96 +373,79 @@
             pointer-events: all;
         }
 
-        @keyframes slideUpFade {
-            0% { transform: translateY(80px) scale(0.9); opacity: 0; }
-            100% { transform: translateY(0) scale(1); opacity: 1; }
-        }
-
-        @keyframes glowingBorder {
-            0% { box-shadow: 0 0 20px rgba(255, 215, 0, 0.5), inset 0 0 20px rgba(255, 215, 0, 0.2); }
-            50% { box-shadow: 0 0 50px rgba(255, 215, 0, 0.8), inset 0 0 30px rgba(255, 215, 0, 0.4); }
-            100% { box-shadow: 0 0 20px rgba(255, 215, 0, 0.5), inset 0 0 20px rgba(255, 215, 0, 0.2); }
-        }
-
         .cert-card {
-            background: linear-gradient(145deg, #1e293b, #0f172a);
-            color: #f8fafc;
-            border: 3px solid #ffd700;
-            padding: 35px 25px;
+            background: linear-gradient(145deg, #ffffff, #f1f5f9);
+            color: #0f172a;
+            border: 4px solid #ffd700;
+            padding: 30px 24px;
             border-radius: 24px;
-            max-width: 480px;
-            width: 95%;
-            opacity: 0;
-            transform: translateY(80px);
+            max-width: 520px;
+            width: 92%;
+            box-shadow: 0 0 70px rgba(255, 215, 0, 0.35);
+            animation: cardGlow 3s infinite alternate ease-in-out;
         }
 
-        #finalBirthdayModal.active .cert-card {
-            animation: slideUpFade 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards, glowingBorder 3s infinite alternate;
+        @keyframes cardGlow {
+            0% { box-shadow: 0 0 30px rgba(255, 215, 0, 0.3); }
+            100% { box-shadow: 0 0 60px rgba(255, 42, 95, 0.5); }
         }
 
-        .cert-card .pill-badge {
-            background: linear-gradient(45deg, #ff2a5f, #ff758f);
+        .bday-header-badge {
+            background: linear-gradient(90deg, #ff2a5f, #ff758f);
             color: white;
-            padding: 8px 20px;
-            border-radius: 30px;
-            font-size: 14px;
+            padding: 8px 22px;
+            border-radius: 25px;
+            font-size: 13px;
             font-weight: 900;
             display: inline-block;
-            margin-bottom: 20px;
+            margin-bottom: 14px;
             letter-spacing: 1px;
-            box-shadow: 0 5px 15px rgba(255, 42, 95, 0.4);
+            box-shadow: 0 4px 15px rgba(255, 42, 95, 0.3);
         }
 
-        .cert-card h2 {
-            color: #ffd700;
-            font-size: 26px;
+        .bday-title {
+            color: #0284c7;
+            font-size: 24px;
             font-weight: 900;
-            text-shadow: 0 2px 10px rgba(255, 215, 0, 0.3);
-            margin-bottom: 5px;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
         }
 
-        .cert-card .subtitle {
-            font-size: 13px;
-            color: #94a3b8;
-            font-weight: bold;
-            margin-bottom: 25px;
-            letter-spacing: 2px;
+        .bday-subtitle {
+            font-size: 12px;
+            color: #64748b;
+            font-weight: 800;
+            margin-bottom: 18px;
+            text-transform: uppercase;
         }
 
-        .cert-card .message-body {
-            font-size: 15px;
-            color: #e2e8f0;
-            line-height: 1.8;
+        .bday-letter {
+            font-size: 14px;
+            color: #1e293b;
+            line-height: 1.7;
             text-align: left;
-            margin-bottom: 25px;
-            font-weight: 500;
+            background: rgba(248, 250, 252, 0.8);
+            padding: 18px;
+            border-radius: 16px;
+            border-left: 4px solid #0ea5e9;
+            margin-bottom: 18px;
         }
 
-        .cert-card .message-body span {
-            color: #38bdf8;
-            font-weight: bold;
-        }
-
-        .footer-note {
-            border-top: 1px solid rgba(255, 215, 0, 0.3);
-            margin-top: 20px;
-            padding-top: 15px;
+        .bday-footer-note {
+            border-top: 2px dashed #cbd5e1;
+            padding-top: 14px;
             display: flex;
             justify-content: space-between;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: bold;
-            color: #cbd5e1;
+            color: #475569;
         }
     </style>
 </head>
 <body>
 
-    <!-- Audio Elements -->
-    <!-- Make sure to place your favorite friendship song (like Tera Yaar Hoon Main) named 'dosti_song.mp3' in the same folder -->
-    <audio id="dostiSong" src="dosti_song.mp3" loop preload="auto"></audio>
-
     <div id="gameContainer">
-        <!-- 3D Interactive Showroom & Start Screen -->
+        <!-- 3D Interactive Showroom -->
         <div id="showroomOverlay">
             <div class="showroom-header">
                 <h1>SAFA'S BLACK THAR 🚘</h1>
@@ -491,13 +475,13 @@
             </div>
         </div>
 
-        <!-- Flying Gift Messages -->
+        <!-- Dynamic Flying Messages -->
         <div id="flyingMsg">
             <div class="icon" id="popIcon">🎂</div>
             <p id="popMsg">Happy Birthday Safa!</p>
         </div>
 
-        <!-- Crash Warning Modal -->
+        <!-- Crash Modal -->
         <div id="crashModal">
             <div class="crash-box">
                 <h2>💥 Minor Bumper Touch!</h2>
@@ -506,7 +490,7 @@
             </div>
         </div>
 
-        <!-- Controls -->
+        <!-- Game Controls -->
         <div class="controls">
             <div class="d-pad">
                 <div class="btn-ctrl" id="btnLeft">◄</div>
@@ -519,11 +503,11 @@
             </div>
         </div>
 
-        <!-- Secret Keypad Screen (AIIMS Security Gate) -->
+        <!-- Secret Gate Keypad -->
         <div id="secretLockScreen">
             <div class="lock-box">
                 <h2 style="color: #ffd700; font-size: 22px;">🔐 AIIMS VIP GATE</h2>
-                <p style="font-size: 13px; color: #94a3b8; margin-top: 6px;">Enter the Secret Code (e.g., 0055, 0001, or 7777) to Unlock Your Surprise!</p>
+                <p style="font-size: 13px; color: #94a3b8; margin-top: 6px;">Enter Secret Passcode to Reveal Birthday Surprise!</p>
                 
                 <input type="text" id="passInput" class="lock-input" placeholder="0055" maxlength="10">
                 <br>
@@ -532,26 +516,26 @@
             </div>
         </div>
 
-        <!-- NEW BEAUTIFUL ANIMATED BIRTHDAY SCREEN -->
+        <!-- Birthday Message Overlay -->
         <div id="finalBirthdayModal">
             <div class="cert-card">
-                <div class="pill-badge">🎉 HAPPY BIRTHDAY SAFA! 🎂</div>
-                <h2>THE DREAM IS REAL</h2>
-                <p class="subtitle">WELCOME TO AIIMS DELHI</p>
+                <div class="bday-header-badge">🎂 HAPPY BIRTHDAY SAFA! 🎉</div>
+                <h2 class="bday-title">AIIMS DELHI UNLOCKED</h2>
+                <p class="bday-subtitle">A Special Message For My Dearest Cousin</p>
                 
-                <div class="message-body">
-                    My dearest Safa,<br><br>
-                    You finally drove your absolute dream, the <span>Black Thar</span>, straight into the gates of <span>AIIMS Delhi</span>! This isn't just a game; it's a glimpse of the beautiful future waiting for you.<br><br>
-                    Keep that fire burning, study hard, and crack that NEET exam. I know you're going to wear that white coat one day and make us all so incredibly proud. No matter what the journey brings, I'll always be cheering for you from the passenger seat of life.<br><br>
-                    May all your dreams come true! Have the most wonderful birthday! ❤️
+                <div class="bday-letter">
+                    <p><b>Dear Safa,</b></p><br>
+                    <p>Happy Birthday! 🎉 Today you didn't just drive your dream <b>Black Thar</b> all the way to AIIMS Delhi, you proved that no barrier can stay in your way when you set your mind to something.</p><br>
+                    <p>You are one of the most hardworking, dedicated, and wonderful cousins anyone could ask for. Watching your passion for cracking <b>NEET</b> and wearing that white coat with pride inspires everyone around you.</p><br>
+                    <p>May this year bring you all the focus, happiness, success, and strength to achieve every single dream you hold dear. AIIMS Delhi is waiting for you doctor sahiba! Keep shining! ✨🩺🚘</p>
                 </div>
 
-                <div class="footer-note">
-                    <span>📍 Destination Reached</span>
-                    <span>✍️ With love, Your Best Cxn</span>
+                <div class="bday-footer-note">
+                    <span>📍 Destination: AIIMS Delhi</span>
+                    <span>✍️ Reserved For: Safa</span>
                 </div>
             </div>
-            <button class="unlock-btn" style="margin-top: 25px; background: linear-gradient(45deg, #38bdf8, #0ea5e9);" onclick="location.reload()">Drive Again 🔄</button>
+            <button class="unlock-btn" style="margin-top: 20px;" onclick="location.reload()">Drive Again 🔄</button>
         </div>
     </div>
 
@@ -562,13 +546,6 @@
 
         const showroomCanvas = document.getElementById("showroomCanvas");
         const showCtx = showroomCanvas.getContext("2d");
-
-        // Load Custom Images
-        const tharImg = new Image();
-        tharImg.src = 'oquamhb_1877457.jpg';
-        
-        const aiimsImg = new Image();
-        aiimsImg.src = '172130-170895-126075-aiims-delhi.jpg';
 
         function resizeCanvas() {
             canvas.width = window.innerWidth;
@@ -585,12 +562,12 @@
         let engineOsc = null;
         let engineGain = null;
         let musicTimer = null;
+        let dostiMusicTimer = null;
 
         function initAudio() {
             if (audioCtx) return;
             audioCtx = new AudioCtx();
 
-            // Continuous Engine Tone
             engineOsc = audioCtx.createOscillator();
             engineGain = audioCtx.createGain();
             engineOsc.type = 'sawtooth';
@@ -600,7 +577,6 @@
             engineGain.connect(audioCtx.destination);
             engineOsc.start();
 
-            // Cool Upbeat Melody Sequence
             let melody = [
                 329.63, 0, 329.63, 0, 392.00, 0, 440.00, 0, 
                 493.88, 493.88, 440.00, 392.00, 329.63, 0, 0, 0
@@ -629,6 +605,36 @@
             }, 200);
         }
 
+        // Dedicated Friendship Victory Melody
+        function playDostiSong() {
+            if (musicTimer) clearInterval(musicTimer);
+            if (engineGain) engineGain.gain.setValueAtTime(0, audioCtx.currentTime);
+
+            let dostiNotes = [
+                261.63, 293.66, 329.63, 349.23, 392.00, 392.00, 440.00, 392.00,
+                349.23, 329.63, 293.66, 329.63, 392.00, 523.25, 493.88, 440.00
+            ];
+            let nIdx = 0;
+            dostiMusicTimer = setInterval(() => {
+                try {
+                    let freq = dostiNotes[nIdx % dostiNotes.length];
+                    let osc = audioCtx.createOscillator();
+                    let gain = audioCtx.createGain();
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+                    
+                    gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.35);
+                    
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.35);
+                    nIdx++;
+                } catch(e){}
+            }, 260);
+        }
+
         function updateEngineAudio(currentSpeed) {
             if (!audioCtx || !engineOsc) return;
             let pitch = 40 + (currentSpeed * 1.2);
@@ -652,22 +658,20 @@
             } catch(e) {}
         }
 
-        // Flying Messages
         const giftList = [
             { icon: "🎂", text: "Happy Birthday Safa! Rock your special day!" },
-            { icon: "🩺", text: "Future Rockstar in the making! AIIMS is waiting!" },
-            { icon: "🚘", text: "Queen driving her dream Black Thar in full swag!" },
-            { icon: "🔥", text: "Keep the hustle on! NEET is yours to crack!" },
+            { icon: "🩺", text: "Future Rockstar Doctor! AIIMS Delhi is waiting!" },
+            { icon: "🚘", text: "Safa driving her dream Black Thar in full swag!" },
+            { icon: "🔥", text: "Keep pushing forward! NEET is yours to crack!" },
             { icon: "🌟", text: "You've got the spark, Safa! Keep shining!" }
         ];
         const animClasses = ["anim-bounce", "anim-slide", "anim-zoom"];
 
-        // Core Physics State
         let speed = 0;
         let maxSpeed = 130;
         let accel = 0.5;
         let decal = 0.25;
-        let distanceLeft = 5.0; // 5.0 KM
+        let distanceLeft = 5.0; 
         let gameActive = false;
         let inShowroom = true;
         let shakeTime = 0;
@@ -675,7 +679,6 @@
         let tharX = 0; 
         let tharSpeedX = 0;
 
-        // Track World Geometry
         let roadOffset = 0;
         let streetLamps = [];
         let traffic = [];
@@ -683,7 +686,6 @@
         let aiimsZ = 1600;
         let worldZ = 0; 
 
-        // Controls State
         const keys = { left: false, right: false, up: false, down: false, nitro: false };
 
         window.addEventListener('keydown', e => {
@@ -729,7 +731,7 @@
                 lane: l,
                 x: strictLanes[l],
                 absZ: worldZ + zOffset,
-                speed: 40 + Math.random() * 30, 
+                speed: 40 + Math.random() * 30,
                 type: vehicleModels[Math.floor(Math.random() * vehicleModels.length)]
             };
         }
@@ -738,8 +740,91 @@
             traffic.push(createTrafficVehicle(i, 600 + Math.random() * 800));
         }
 
-        /* --- DRAW SHOWROOM 3D ROTATING THAR --- */
+        /* --- ACCURATE MAHINDRA THAR 360 DEGREE ROTATION (PERSPECTIVE) --- */
         let showroomAngle = 0;
+
+        function renderShowroomThar(targetCtx, angle) {
+            targetCtx.save();
+            let normAngle = (angle % (Math.PI * 2) + Math.PI * 2) % (Math.PI * 2);
+
+            let isFront = normAngle > Math.PI * 0.5 && normAngle < Math.PI * 1.5;
+            let facingRatio = Math.sin(normAngle); 
+            let sidePerspective = Math.cos(normAngle); 
+
+            // Shadow
+            targetCtx.fillStyle = "rgba(0, 0, 0, 0.6)";
+            targetCtx.beginPath();
+            targetCtx.ellipse(0, 45, 95, 22, 0, 0, Math.PI * 2);
+            targetCtx.fill();
+
+            // Wheels
+            targetCtx.fillStyle = "#09090b";
+            let wheelXOffset = sidePerspective * 65;
+            targetCtx.fillRect(-78 + wheelXOffset * 0.2, -10, 24, 52);
+            targetCtx.fillRect(54 + wheelXOffset * 0.2, -10, 24, 52);
+
+            // Black SUV Boxy Body
+            targetCtx.fillStyle = "#020617";
+            targetCtx.beginPath();
+            if(targetCtx.roundRect) targetCtx.roundRect(-75, -60, 150, 85, 10); else targetCtx.rect(-75, -60, 150, 85);
+            targetCtx.fill();
+
+            // Fender Flares
+            targetCtx.fillStyle = "#1e293b";
+            targetCtx.fillRect(-82, 0, 16, 25);
+            targetCtx.fillRect(66, 0, 16, 25);
+
+            // Cabin Roof / Windows
+            targetCtx.fillStyle = "#0f172a";
+            targetCtx.fillRect(-58, -55, 116, 38);
+            targetCtx.fillStyle = "rgba(56, 189, 248, 0.25)";
+            targetCtx.fillRect(-50, -50, 100, 30);
+
+            if (isFront) {
+                // Front View: 7-Slot Grille & Round Lights
+                targetCtx.fillStyle = "#1e293b";
+                targetCtx.fillRect(-45, -15, 90, 35);
+                
+                targetCtx.fillStyle = "#000";
+                for (let g = -32; g <= 32; g += 11) {
+                    targetCtx.fillRect(g, -10, 6, 24);
+                }
+
+                // Round Headlights
+                targetCtx.fillStyle = "#fef08a";
+                targetCtx.shadowColor = "#fde047"; targetCtx.shadowBlur = 15;
+                targetCtx.beginPath(); targetCtx.arc(-55, -2, 11, 0, Math.PI * 2); targetCtx.fill();
+                targetCtx.beginPath(); targetCtx.arc(55, -2, 11, 0, Math.PI * 2); targetCtx.fill();
+                targetCtx.shadowBlur = 0;
+
+                // Mahindra Front Bumper & Badge
+                targetCtx.fillStyle = "#334155";
+                targetCtx.fillRect(-65, 20, 130, 18);
+                targetCtx.fillStyle = "#ffd700";
+                targetCtx.font = "900 10px sans-serif";
+                targetCtx.textAlign = "center";
+                targetCtx.fillText("THAR • SAFA", 0, 33);
+            } else {
+                // Rear View: Spare Wheel & Rectangular Tail Lights
+                targetCtx.fillStyle = "#000";
+                targetCtx.beginPath(); targetCtx.arc(0, -5, 28, 0, Math.PI * 2); targetCtx.fill();
+                targetCtx.strokeStyle = "#475569"; targetCtx.lineWidth = 4; targetCtx.stroke();
+
+                targetCtx.fillStyle = "#ef4444";
+                targetCtx.shadowColor = "#ff0000"; targetCtx.shadowBlur = 12;
+                targetCtx.fillRect(-68, -20, 12, 26);
+                targetCtx.fillRect(56, -20, 12, 26);
+                targetCtx.shadowBlur = 0;
+
+                targetCtx.fillStyle = "#ffd700";
+                targetCtx.font = "900 10px sans-serif";
+                targetCtx.textAlign = "center";
+                targetCtx.fillText("SAFA'S 4x4", 0, 33);
+            }
+
+            targetCtx.restore();
+        }
+
         function renderShowroom() {
             if (!inShowroom) return;
             let w = showroomCanvas.width;
@@ -747,29 +832,14 @@
             showCtx.clearRect(0, 0, w, h);
 
             let cx = w / 2;
-            let cy = h / 2 + 20;
-            
-            showCtx.fillStyle = "rgba(255, 215, 0, 0.08)";
-            showCtx.beginPath();
-            showCtx.ellipse(cx, cy + 80, 160, 45, 0, 0, Math.PI * 2);
-            showCtx.fill();
-            showCtx.strokeStyle = "rgba(255, 215, 0, 0.4)";
-            showCtx.lineWidth = 2;
-            showCtx.stroke();
+            let cy = h / 2 + 30;
 
             showCtx.save();
             showCtx.translate(cx, cy);
-            
-            // Rotating 360 smoothly on its axis (Z-axis rotation, not reflection)
-            showCtx.rotate(Math.sin(showroomAngle) * 0.15); // Gentle wobble for 3D feel
-            
-            // Base scale for the showroom preview
-            showCtx.scale(1.2, 1.2); 
-
-            drawTharRear(0, 0, 1, true); 
+            renderShowroomThar(showCtx, showroomAngle);
             showCtx.restore();
 
-            showroomAngle += 0.02;
+            showroomAngle += 0.03;
             requestAnimationFrame(renderShowroom);
         }
         requestAnimationFrame(renderShowroom);
@@ -782,42 +852,56 @@
             requestAnimationFrame(update);
         }
 
-        /* --- DRAW NEW IMAGE BASED THAR --- */
-        function drawTharRear(x, y, scale, isShowroom = false) {
+        /* --- REAR THAR DRIVE VIEW --- */
+        function drawTharRear(x, y, scale) {
             ctx.save();
-            if(!isShowroom) ctx.translate(x, y);
+            ctx.translate(x, y);
+            ctx.scale(scale, scale);
 
-            let targetCtx = isShowroom ? showCtx : ctx;
-            if(isShowroom) {
-                targetCtx.save();
-                targetCtx.translate(x, y);
-            }
+            // Shadow
+            ctx.fillStyle = "rgba(0, 0, 0, 0.65)";
+            ctx.beginPath();
+            ctx.ellipse(0, 38, 80, 18, 0, 0, Math.PI * 2);
+            ctx.fill();
 
-            targetCtx.scale(scale, scale);
+            // Tires
+            ctx.fillStyle = "#0a0a0a";
+            ctx.fillRect(-82, -18, 26, 56); 
+            ctx.fillRect(56, -18, 26, 56);  
 
-            // Shadow under the car image
-            targetCtx.fillStyle = "rgba(0, 0, 0, 0.8)";
-            targetCtx.beginPath();
-            targetCtx.ellipse(0, 70, 100, 15, 0, 0, Math.PI * 2);
-            targetCtx.fill();
+            // Body
+            ctx.fillStyle = "#020617"; 
+            ctx.beginPath();
+            if (ctx.roundRect) ctx.roundRect(-68, -60, 136, 86, 8); else ctx.rect(-68, -60, 136, 86);
+            ctx.fill();
 
-            // Using the real Thar Image
-            let imgW = 240; 
-            let imgH = 160; 
-            
-            if (tharImg.complete) {
-                targetCtx.drawImage(tharImg, -imgW/2, -imgH/2, imgW, imgH);
-            } else {
-                // Temporary black box until image loads
-                targetCtx.fillStyle = '#111';
-                targetCtx.fillRect(-imgW/2, -imgH/2, imgW, imgH);
-            }
+            // Cabin Glass
+            ctx.fillStyle = "#0b1329";
+            ctx.fillRect(-52, -52, 104, 36);
 
-            if(isShowroom) targetCtx.restore();
+            // Spare Wheel
+            ctx.fillStyle = "#030712";
+            ctx.beginPath(); ctx.arc(0, -6, 28, 0, Math.PI * 2); ctx.fill();
+            ctx.strokeStyle = "#374151"; ctx.lineWidth = 4; ctx.stroke();
+
+            // Tail Lights
+            ctx.fillStyle = "#ef4444";
+            ctx.shadowColor = "#ff0000"; ctx.shadowBlur = 12;
+            ctx.fillRect(-65, -24, 12, 26);
+            ctx.fillRect(53, -24, 12, 26);
+            ctx.shadowBlur = 0;
+
+            // Bumper & Plate
+            ctx.fillStyle = "#030712"; ctx.fillRect(-70, 18, 140, 18);
+            ctx.fillStyle = "#0f172a"; ctx.fillRect(-40, 20, 80, 14);
+            ctx.strokeStyle = "#ffd700"; ctx.lineWidth = 1; ctx.strokeRect(-40, 20, 80, 14);
+            ctx.fillStyle = "#ffd700"; ctx.font = "900 9px sans-serif"; ctx.textAlign = "center";
+            ctx.fillText("SAFA'S THAR", 0, 31);
+
             ctx.restore();
         }
 
-        /* --- DETAILED HIGHWAY TRAFFIC VEHICLES --- */
+        /* --- DETAILED TRAFFIC --- */
         function drawVehicle(x, y, scale, type) {
             ctx.save();
             ctx.translate(x, y);
@@ -825,10 +909,7 @@
 
             if (type === 'superbike') {
                 ctx.fillStyle = "#000"; ctx.fillRect(-6, -10, 12, 40); 
-                ctx.fillStyle = "#1e293b"; ctx.fillRect(-18, -12, 36, 6); 
                 ctx.fillStyle = "#ea580c"; ctx.fillRect(-14, -26, 28, 20); 
-                ctx.fillStyle = "#000"; ctx.beginPath(); ctx.arc(0, -32, 9, 0, Math.PI*2); ctx.fill(); 
-                ctx.fillStyle = "#38bdf8"; ctx.fillRect(-6, -34, 12, 4); 
                 ctx.fillStyle = "#ef4444"; ctx.fillRect(-4, -2, 8, 5); 
             } else if (type === 'swift_white') {
                 ctx.fillStyle = "#f1f5f9"; 
@@ -837,46 +918,64 @@
                 ctx.fill();
                 ctx.fillStyle = "#0f172a"; ctx.fillRect(-30, -30, 60, 22);
                 ctx.fillStyle = "#ef4444"; ctx.fillRect(-34, 8, 10, 8); ctx.fillRect(24, 8, 10, 8);
-                ctx.fillStyle = "#333"; ctx.fillRect(-16, 10, 32, 6); 
-            } else if (type === 'sports_red') {
+            } else {
                 ctx.fillStyle = "#dc2626";
                 ctx.beginPath();
                 if(ctx.roundRect) ctx.roundRect(-42, -28, 84, 46, 6); else ctx.rect(-42, -28, 84, 46);
                 ctx.fill();
                 ctx.fillStyle = "#020617"; ctx.fillRect(-32, -24, 64, 18); 
-                ctx.fillStyle = "#ff0000"; ctx.shadowColor = "#ff0000"; ctx.shadowBlur = 8;
-                ctx.fillRect(-38, 8, 14, 5); ctx.fillRect(24, 8, 14, 5);
-                ctx.shadowBlur = 0;
-            } else {
-                ctx.fillStyle = "#0f172a";
-                ctx.beginPath();
-                if(ctx.roundRect) ctx.roundRect(-42, -42, 84, 62, 8); else ctx.rect(-42, -42, 84, 62);
-                ctx.fill();
-                ctx.fillStyle = "#1e293b"; ctx.fillRect(-34, -36, 68, 26);
-                ctx.fillStyle = "#dc2626"; ctx.fillRect(-38, 10, 12, 10); ctx.fillRect(26, 10, 12, 10);
+                ctx.fillStyle = "#ff0000"; ctx.fillRect(-38, 8, 14, 5); ctx.fillRect(24, 8, 14, 5);
             }
 
             ctx.restore();
         }
 
-        /* --- DRAW NEW IMAGE BASED AIIMS BUILDING --- */
+        /* --- ACCURATE AIIMS DELHI BUILDING --- */
         function drawAIIMSBuilding(x, y, scale) {
             ctx.save();
             ctx.translate(x, y);
             ctx.scale(scale, scale);
 
-            let imgW = 600;
-            let imgH = 300;
+            // Main Building Concrete Facade
+            ctx.fillStyle = "#e2e8f0"; 
+            ctx.fillRect(-340, -280, 680, 280);
 
-            if (aiimsImg.complete) {
-                // Shift image up so it sits correctly on the horizon
-                ctx.drawImage(aiimsImg, -imgW/2, -imgH + 20, imgW, imgH);
-            } else {
-                // Fallback gray box
-                ctx.fillStyle = "#e5e5e5"; 
-                ctx.fillRect(-320, -300, 640, 300);
+            // Grid Windows
+            ctx.fillStyle = "#1e293b";
+            for(let r = -250; r < -70; r += 24) {
+                for(let c = -310; c < 310; c += 28) {
+                    ctx.fillRect(c, r, 16, 14);
+                }
             }
-            
+
+            // Greenery / Trees Base
+            ctx.fillStyle = "#15803d";
+            for(let t = -320; t <= 320; t += 40) {
+                ctx.beginPath(); ctx.arc(t, -20, 30, 0, Math.PI * 2); ctx.fill();
+            }
+
+            // Official Top Header Frame
+            ctx.fillStyle = "#ffffff";
+            ctx.fillRect(-320, -340, 640, 55);
+            ctx.strokeStyle = "#475569"; ctx.lineWidth = 3;
+            ctx.strokeRect(-320, -340, 640, 55);
+
+            // Devanagari Hindi Text Signboard
+            ctx.fillStyle = "#701a75";
+            ctx.font = "bold 15px Arial";
+            ctx.textAlign = "center";
+            ctx.fillText("अखिल भारतीय आयुर्विज्ञान संस्थान", 0, -318);
+
+            // English Signboard
+            ctx.fillStyle = "#1e1b4b";
+            ctx.font = "900 17px Arial";
+            ctx.fillText("ALL INDIA INSTITUTE OF MEDICAL SCIENCES", 0, -297);
+
+            // Red Medical Crosses on Wings
+            ctx.fillStyle = "#ef4444";
+            ctx.fillRect(-300, -260, 24, 8); ctx.fillRect(-292, -268, 8, 24);
+            ctx.fillRect(276, -260, 24, 8); ctx.fillRect(284, -268, 8, 24);
+
             ctx.restore();
         }
 
@@ -938,25 +1037,13 @@
             requestAnimationFrame(update);
         }
 
-        // Secret Code Verification & DOSTI SONG TRIGGER
         function verifySecretCode() {
             const input = document.getElementById("passInput").value.trim();
             if (input.length >= 1) {
                 document.getElementById("secretLockScreen").classList.remove("active");
-                
-                // TRIGGER DOSTI SONG
-                let dostiAudio = document.getElementById("dostiSong");
-                if (dostiAudio) {
-                    dostiAudio.play().catch(e => console.log("Audio play blocked by browser, requires interaction."));
-                }
-
-                // Stop engine sound
-                if (audioCtx) {
-                    audioCtx.suspend();
-                }
-
                 triggerFireworks();
-                setInterval(triggerFireworks, 900);
+                setInterval(triggerFireworks, 800);
+                playDostiSong();
                 document.getElementById("finalBirthdayModal").classList.add("active");
             } else {
                 document.getElementById("lockErr").style.display = "block";
@@ -1020,8 +1107,6 @@
             skyGrad.addColorStop(1, '#0f172a');
             ctx.fillStyle = skyGrad;
             ctx.fillRect(0, 0, canvas.width, horizonY);
-            ctx.fillStyle = "#f8fafc"; ctx.beginPath();
-            ctx.arc(canvas.width * 0.82, horizonY - 50, 20, 0, Math.PI * 2); ctx.fill();
 
             // Pseudo 3D Road
             roadOffset = worldZ;
@@ -1056,7 +1141,7 @@
             // Highway Poles
             streetLamps.forEach(lamp => {
                 let relativeZ = lamp.absZ - worldZ;
-                if (relativeZ < 0) lamp.absZ += 1000; 
+                if (relativeZ < 0) lamp.absZ += 1000;
 
                 if (relativeZ > 0 && relativeZ < 1000) {
                     let scale = 1 / (relativeZ * 0.0018 + 1);
@@ -1066,7 +1151,7 @@
                 }
             });
 
-            // REALISTIC AIIMS APPROACH
+            // AIIMS Approach
             if (distanceLeft <= 0.8) {
                 let relAiimsZ = aiimsZ - worldZ;
                 if (relAiimsZ < 110) relAiimsZ = 110;
@@ -1085,6 +1170,7 @@
                 }
             }
 
+            // Independent Traffic
             traffic.forEach((car, index) => {
                 car.absZ += car.speed * 0.16;
                 let relativeZ = car.absZ - worldZ;
@@ -1096,9 +1182,8 @@
                 if (relativeZ < -20) {
                     traffic[index] = createTrafficVehicle(car.lane, 1500); 
                     triggerGiftPopup();
-                } 
-                else if (relativeZ > 1500) {
-                    traffic[index] = createTrafficVehicle(car.lane, -50);
+                } else if (relativeZ > 1500) {
+                    traffic[index] = createTrafficVehicle(car.lane, -50); 
                 }
 
                 if (relativeZ > 0 && relativeZ < 1500) {
@@ -1110,10 +1195,10 @@
                 }
             });
 
-            // Player Thar View
+            // Player Thar
             let tharCanvasX = canvas.width / 2 + (tharX * (roadBottomW / 2.3));
-            let tharCanvasY = canvas.height - 110; // adjusted for image height
-            drawTharRear(tharCanvasX, tharCanvasY, 0.9, false);
+            let tharCanvasY = canvas.height - 135; 
+            drawTharRear(tharCanvasX, tharCanvasY, 0.88);
 
             drawFireworks();
 
