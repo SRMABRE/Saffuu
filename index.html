@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Safa's Journey to AIIMS Delhi 🚗💨</title>
+    <title>Safa's Drive to AIIMS Delhi 🚗🏥</title>
     <style>
         * {
             box-sizing: border-box;
@@ -11,21 +11,20 @@
             padding: 0;
             user-select: none;
             -webkit-user-select: none;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
         }
 
         body, html {
             width: 100%;
             height: 100%;
             overflow: hidden;
-            background: #111;
+            background: #050811;
         }
 
         #gameContainer {
             position: relative;
             width: 100vw;
             height: 100vh;
-            background: #87CEEB;
         }
 
         canvas {
@@ -41,121 +40,123 @@
             left: 50%;
             transform: translateX(-50%);
             display: flex;
-            gap: 15px;
+            gap: 12px;
             z-index: 10;
-            width: 90%;
-            max-width: 600px;
+            width: 92%;
+            max-width: 650px;
             justify-content: space-between;
         }
 
         .hud-card {
-            background: rgba(0, 0, 0, 0.65);
-            backdrop-filter: blur(8px);
-            border: 2px solid rgba(255, 215, 0, 0.6);
+            background: rgba(10, 15, 30, 0.75);
+            backdrop-filter: blur(10px);
+            border: 1.5px solid rgba(255, 215, 0, 0.5);
             color: #fff;
-            padding: 10px 18px;
-            border-radius: 15px;
+            padding: 8px 14px;
+            border-radius: 12px;
             text-align: center;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.6);
+            flex: 1;
         }
 
         .hud-card h3 {
-            font-size: 11px;
+            font-size: 10px;
             text-transform: uppercase;
             color: #ffd700;
             letter-spacing: 1px;
         }
 
         .hud-card p {
-            font-size: 18px;
+            font-size: 17px;
             font-weight: bold;
         }
 
-        /* Message Popup Card */
-        #messagePopup {
+        /* Interactive Action Floating Messages */
+        #flyingMsg {
             position: absolute;
-            top: 35%;
+            top: 30%;
             left: 50%;
             transform: translate(-50%, -50%) scale(0);
-            background: linear-gradient(135deg, #ffffff, #fff0f5);
+            background: rgba(255, 255, 255, 0.95);
             border: 3px solid #ff4d6d;
             border-radius: 20px;
-            padding: 20px 25px;
-            max-width: 340px;
-            width: 85%;
+            padding: 15px 22px;
+            max-width: 320px;
+            width: 80%;
             text-align: center;
-            box-shadow: 0 15px 35px rgba(255, 77, 109, 0.4);
+            box-shadow: 0 10px 30px rgba(255, 77, 109, 0.5);
             z-index: 20;
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             pointer-events: none;
         }
 
-        #messagePopup.active {
-            transform: translate(-50%, -50%) scale(1);
+        #flyingMsg.active {
+            transform: translate(-50%, -50%) scale(1.1);
         }
 
-        #messagePopup .icon {
-            font-size: 35px;
-            margin-bottom: 5px;
-            animation: pulse 1s infinite alternate;
+        #flyingMsg .icon {
+            font-size: 30px;
+            margin-bottom: 4px;
         }
 
-        #messagePopup p {
-            color: #2b2b2b;
-            font-size: 15px;
-            font-weight: 600;
+        #flyingMsg p {
+            color: #111;
+            font-size: 14px;
+            font-weight: 700;
             line-height: 1.4;
         }
 
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            100% { transform: scale(1.2); }
-        }
-
-        /* Touch Controls for Mobile */
+        /* Mobile Controls */
         .controls {
             position: absolute;
             bottom: 20px;
             width: 100%;
             display: flex;
             justify-content: space-between;
-            padding: 0 25px;
+            padding: 0 20px;
             z-index: 10;
         }
 
         .btn {
-            background: rgba(255, 255, 255, 0.25);
-            backdrop-filter: blur(5px);
-            border: 2px solid rgba(255, 255, 255, 0.5);
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(8px);
+            border: 2px solid rgba(255, 255, 255, 0.4);
             color: white;
-            width: 65px;
-            height: 65px;
+            width: 62px;
+            height: 62px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
+            font-size: 22px;
             font-weight: bold;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            box-shadow: 0 6px 18px rgba(0,0,0,0.4);
             touch-action: manipulation;
         }
 
         .btn:active {
-            background: rgba(255, 215, 0, 0.6);
+            background: rgba(255, 215, 0, 0.7);
+            color: #000;
             transform: scale(0.92);
+        }
+
+        .nitro-btn {
+            background: linear-gradient(45deg, #ff416c, #ff4b2b);
+            border: none;
+            color: white;
         }
 
         .d-pad {
             display: flex;
-            gap: 15px;
+            gap: 12px;
         }
 
-        /* Victory Overlay */
+        /* Celebration Screen */
         #victoryScreen {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(10px);
+            background: rgba(5, 10, 20, 0.92);
+            backdrop-filter: blur(12px);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -163,10 +164,10 @@
             z-index: 30;
             opacity: 0;
             pointer-events: none;
-            transition: opacity 1s ease;
+            transition: opacity 1.2s ease;
             color: white;
             text-align: center;
-            padding: 20px;
+            padding: 25px;
         }
 
         #victoryScreen.active {
@@ -174,42 +175,53 @@
             pointer-events: all;
         }
 
-        .aiims-badge {
-            background: #0056b3;
+        .badge-aiims {
+            background: linear-gradient(45deg, #0056b3, #00a8ff);
             color: white;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: bold;
+            padding: 8px 18px;
+            border-radius: 25px;
+            font-size: 13px;
+            font-weight: 800;
+            letter-spacing: 1px;
             margin-bottom: 15px;
-            border: 2px solid #6610f2;
+            box-shadow: 0 0 15px rgba(0, 168, 255, 0.6);
         }
 
         .victory-title {
-            font-size: 32px;
+            font-size: 34px;
             color: #ffd700;
-            margin-bottom: 10px;
-            text-shadow: 0 0 10px rgba(255,215,0,0.5);
+            margin-bottom: 12px;
+            text-shadow: 0 0 15px rgba(255,215,0,0.6);
         }
 
-        .victory-msg {
-            font-size: 16px;
-            max-width: 450px;
-            line-height: 1.6;
+        .letter-card {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            border-radius: 18px;
+            max-width: 480px;
             margin-bottom: 25px;
-            color: #eee;
+            line-height: 1.6;
+            font-size: 15px;
+            color: #e2e8f0;
+            box-shadow: inset 0 0 15px rgba(255,255,255,0.05);
         }
 
         .restart-btn {
-            background: linear-gradient(45deg, #ff4d6d, #ff758f);
+            background: linear-gradient(45deg, #00b09b, #96c93d);
             border: none;
             color: white;
-            padding: 12px 30px;
-            border-radius: 25px;
+            padding: 14px 35px;
+            border-radius: 30px;
             font-size: 16px;
             font-weight: bold;
             cursor: pointer;
-            box-shadow: 0 5px 15px rgba(255, 77, 109, 0.4);
+            box-shadow: 0 6px 20px rgba(0, 176, 155, 0.4);
+            transition: transform 0.2s;
+        }
+
+        .restart-btn:hover {
+            transform: scale(1.05);
         }
     </style>
 </head>
@@ -218,15 +230,15 @@
     <div id="gameContainer">
         <canvas id="gameCanvas"></canvas>
 
-        <!-- HUD Header -->
+        <!-- Top HUD -->
         <div class="hud">
             <div class="hud-card">
                 <h3>Destination</h3>
-                <p>📍 AIIMS Delhi</p>
+                <p>🏥 AIIMS Delhi</p>
             </div>
             <div class="hud-card">
-                <h3>Distance Left</h3>
-                <p><span id="distVal">5.0</span> km</p>
+                <h3>Distance</h3>
+                <p><span id="distVal">5.0</span> KM</p>
             </div>
             <div class="hud-card">
                 <h3>Speed</h3>
@@ -234,13 +246,13 @@
             </div>
         </div>
 
-        <!-- Flying / Throwing Message Popup -->
-        <div id="messagePopup">
+        <!-- Flying Message / Gift Popup -->
+        <div id="flyingMsg">
             <div class="icon" id="popIcon">💌</div>
             <p id="popMsg">Keep pushing forward, Safa!</p>
         </div>
 
-        <!-- Mobile Touch Controls -->
+        <!-- Controls -->
         <div class="controls">
             <div class="d-pad">
                 <div class="btn" id="btnLeft">◄</div>
@@ -248,18 +260,21 @@
             </div>
             <div class="d-pad">
                 <div class="btn" id="btnBrake">▼</div>
-                <div class="btn" id="btnGas">▲</div>
+                <div class="btn nitro-btn" id="btnGas">🚀</div>
             </div>
         </div>
 
-        <!-- Victory Modal Screen -->
+        <!-- Final AIIMS Arrival Celebration Screen -->
         <div id="victoryScreen">
-            <div class="aiims-badge">🏥 DESTINATION REACHED: AIIMS DELHI</div>
-            <h1 class="victory-title">Future Doctor Safa! 🩺✨</h1>
-            <p class="victory-msg">
-                Just like you mastered this road, you are going to conquer the <b>NEET Exam</b> with flying colors! Your dream Thar is waiting for you, and your seat at <b>AIIMS Delhi</b> is set. Keep driving forward with confidence! 🚘💨❤️
-            </p>
-            <button class="restart-btn" onclick="restartGame()">Drive Again 🔄</button>
+            <div class="badge-aiims">📍 ARRIVED AT GATE 1: AIIMS DELHI</div>
+            <h1 class="victory-title">Congratulations Dr. Safa! 🩺✨</h1>
+            <div class="letter-card">
+                <p><b>You made it!</b></p>
+                <p>Just like you comfortably parked your Thar outside AIIMS Delhi today, your dedication and hard work will lead you straight into <b>AIIMS</b> for NEET!</p>
+                <br>
+                <p>Your dream Thar is waiting, your white coat is calling, and your bright future is right ahead. Keep shining! 🚘🩺❤️</p>
+            </div>
+            <button class="restart-btn" onclick="restartGame()">Drive Back Home 🔄</button>
         </div>
     </div>
 
@@ -267,7 +282,6 @@
         const canvas = document.getElementById("gameCanvas");
         const ctx = canvas.getContext("2d");
 
-        // Canvas Responsive Resize
         function resizeCanvas() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
@@ -275,36 +289,35 @@
         window.addEventListener('resize', resizeCanvas);
         resizeCanvas();
 
-        // Encouragement Messages thrown by Passing Cars
+        // Heartfelt & Motivating Messages
         const popupMessages = [
-            "✨ Keep pushing! Your AIIMS Delhi seat is waiting!",
-            "🚗 You look stunning behind the wheel of this Thar!",
-            "🩺 Dr. Safa in the making! Future Surgeon!",
-            "🔥 Overtake all obstacles like a champion!",
-            "💖 Never stop believing in your dreams, Safa!",
-            "🌟 NEET is just a small checkpoint for a queen like you!",
-            "🎁 Surprise! Safa's Special Edition Black Thar!",
-            "⚡ Full Speed Ahead towards Success!"
+            "✨ 'AIIMS Delhi is waiting for Dr. Safa!'",
+            "🚘 'Behind the wheel of her dream Thar!'",
+            "🩺 'NEET target in sight! Keep crushing it!'",
+            "🚀 'Overtaking all obstacles like a true pro!'",
+            "💖 'Your hard work will pay off very soon!'",
+            "👑 'Future Top Surgeon on the road!'"
         ];
 
-        // Game Variables
+        // Game State Variables
         let speed = 0;
-        let maxSpeed = 120;
-        let accel = 0.5;
-        let decal = 0.3;
-        let distanceLeft = 5.0; // Distance in kilometers to AIIMS
+        let maxSpeed = 160;
+        let accel = 0.8;
+        let decal = 0.4;
+        let distanceLeft = 5.0; // KM
         let gameActive = true;
 
-        // Player Thar Position
-        let tharX = 0; // Relative to road offset (-1 to 1)
+        // Player Position & Steering
+        let tharX = 0; // Relative lane position (-1 to 1)
         let tharSpeedX = 0;
 
-        // Road Geometry & Environment
+        // Road & Objects
         let roadOffset = 0;
-        let trees = [];
+        let streetLamps = [];
         let traffic = [];
+        let aiimsZ = 1200; // Z distance for AIIMS Gate Building Rendering
 
-        // Input Handling
+        // Keyboard Controls
         const keys = { left: false, right: false, up: false, down: false };
 
         window.addEventListener('keydown', e => {
@@ -332,279 +345,332 @@
         bindTouch('btnGas', 'up');
         bindTouch('btnBrake', 'down');
 
-        // Init Trees
-        for (let i = 0; i < 20; i++) {
-            trees.push({
-                z: i * 50,
-                side: i % 2 === 0 ? -1 : 1
-            });
+        // Init Street Lights / Trees
+        for (let i = 0; i < 15; i++) {
+            streetLamps.push({ z: i * 80, side: i % 2 === 0 ? -1 : 1 });
         }
 
         // Init Traffic Cars
         function createTrafficCar() {
             return {
-                x: (Math.random() - 0.5) * 1.2,
-                z: 800 + Math.random() * 400,
-                speed: 30 + Math.random() * 30,
-                color: ['#e74c3c', '#3498db', '#9b59b6', '#f1c40f', '#2ecc71'][Math.floor(Math.random() * 5)]
+                x: (Math.random() - 0.5) * 1.3,
+                z: 600 + Math.random() * 500,
+                speed: 30 + Math.random() * 40,
+                color: ['#e74c3c', '#3498db', '#8e44ad', '#f1c40f', '#1abc9c'][Math.floor(Math.random() * 5)]
             };
         }
 
-        for (let i = 0; i < 4; i++) {
+        for (let i = 0; i < 3; i++) {
             traffic.push(createTrafficCar());
         }
 
-        // Trigger Flying Message Box
+        // Trigger Message Box
         let lastMsgTime = 0;
         function triggerMessage() {
             const now = Date.now();
-            if (now - lastMsgTime > 5000) { // Popup every 5 sec on overtaking/driving
+            if (now - lastMsgTime > 4000) {
                 lastMsgTime = now;
-                const pop = document.getElementById("messagePopup");
+                const pop = document.getElementById("flyingMsg");
                 const msgText = document.getElementById("popMsg");
                 const randomMsg = popupMessages[Math.floor(Math.random() * popupMessages.length)];
                 
                 msgText.innerText = randomMsg;
                 pop.classList.add("active");
 
-                setTimeout(() => {
-                    pop.classList.remove("active");
-                }, 3000);
+                setTimeout(() => { pop.classList.remove("active"); }, 2800);
             }
         }
 
-        // Render Realistic Thar Car
-        function drawThar(x, y, scale) {
+        /* --- DRAW REAR-VIEW MAHINDRA THAR --- */
+        function drawTharRear(x, y, scale) {
             ctx.save();
             ctx.translate(x, y);
             ctx.scale(scale, scale);
 
-            // Shadow
-            ctx.fillStyle = "rgba(0, 0, 0, 0.4)";
+            // Ground Shadow
+            ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
             ctx.beginPath();
-            ctx.ellipse(0, 35, 75, 20, 0, 0, Math.PI * 2);
+            ctx.ellipse(0, 35, 75, 18, 0, 0, Math.PI * 2);
             ctx.fill();
 
-            // Broad Offroad Wheels
+            // Broad Offroad Mud Tires (Left & Right)
             ctx.fillStyle = "#111";
-            ctx.fillRect(-72, -10, 22, 50); // Left Wheel
-            ctx.fillRect(50, -10, 22, 50);  // Right Wheel
+            ctx.fillRect(-78, -15, 24, 52); 
+            ctx.fillRect(54, -15, 24, 52);  
 
-            // Wheel Tread Details
-            ctx.fillStyle = "#333";
-            ctx.fillRect(-70, 0, 18, 30);
-            ctx.fillRect(52, 0, 18, 30);
+            // Tire Threads
+            ctx.fillStyle = "#222";
+            ctx.fillRect(-76, -5, 20, 35);
+            ctx.fillRect(56, -5, 20, 35);
 
-            // Thar Body (Rugged Square Box Shape)
-            ctx.fillStyle = "#1c1c1c"; // Beast Matte Black Finish
+            // Rugged Square Body Base (Matte Black)
+            ctx.fillStyle = "#181818"; 
             ctx.beginPath();
-            ctx.roundRect(-60, -50, 120, 80, 10);
+            ctx.roundRect(-65, -55, 130, 80, 8);
             ctx.fill();
 
-            // Hood Top
-            ctx.fillStyle = "#2a2a2a";
-            ctx.fillRect(-52, -45, 104, 35);
-
-            // Distinct Thar Front Grille
-            ctx.fillStyle = "#111";
-            ctx.fillRect(-40, -25, 80, 22);
-            ctx.strokeStyle = "#444";
-            ctx.lineWidth = 2;
-            for(let i = -32; i <= 32; i += 10) {
-                ctx.beginPath();
-                ctx.moveTo(i, -25);
-                ctx.lineTo(i, -3);
-                ctx.stroke();
-            }
-
-            // Iconic Round Thar Headlights
-            ctx.fillStyle = "#fff";
+            // Rear Cabin Glass / Window
+            ctx.fillStyle = "#0d1b2a";
+            ctx.fillRect(-48, -48, 96, 32);
+            ctx.fillStyle = "rgba(255, 255, 255, 0.15)";
             ctx.beginPath();
-            ctx.arc(-47, -14, 9, 0, Math.PI * 2);
-            ctx.arc(47, -14, 9, 0, Math.PI * 2);
+            ctx.moveTo(-40, -48);
+            ctx.lineTo(-10, -48);
+            ctx.lineTo(-30, -16);
+            ctx.lineTo(-44, -16);
             ctx.fill();
-            ctx.strokeStyle = "#ffd700";
-            ctx.lineWidth = 2;
+
+            // Iconic Thar Back Stepney (Spare Tire mounted on Tailgate)
+            ctx.fillStyle = "#0f0f0f";
+            ctx.beginPath();
+            ctx.arc(0, -5, 26, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.strokeStyle = "#2c2c2c";
+            ctx.lineWidth = 4;
             ctx.stroke();
 
-            // Headlight Glow
-            ctx.fillStyle = "rgba(255, 255, 220, 0.3)";
+            // Stepney Rim
+            ctx.fillStyle = "#222";
             ctx.beginPath();
-            ctx.arc(-47, -14, 15, 0, Math.PI * 2);
-            ctx.arc(47, -14, 15, 0, Math.PI * 2);
+            ctx.arc(0, -5, 12, 0, Math.PI * 2);
             ctx.fill();
 
-            // Rugged Front Bumper
-            ctx.fillStyle = "#0d0d0d";
-            ctx.fillRect(-65, 5, 130, 20);
+            // Bright Glowing LED Tail Lights
+            ctx.fillStyle = "#ff0000";
+            ctx.shadowColor = "#ff0000";
+            ctx.shadowBlur = 12;
+            ctx.fillRect(-62, -20, 12, 22);
+            ctx.fillRect(50, -20, 12, 22);
+            ctx.shadowBlur = 0; // Reset Shadow
 
-            // Custom Metallic Nameplate Bracket "SAFA'S THAR"
-            ctx.fillStyle = "#ffd700";
-            ctx.fillRect(-35, 12, 70, 14);
-            ctx.fillStyle = "#000";
-            ctx.font = "bold 9px Arial";
-            ctx.textAlign = "center";
-            ctx.fillText("SAFA'S THAR", 0, 23);
-
-            // Windshield & Roof Outline
-            ctx.fillStyle = "#111";
-            ctx.fillRect(-48, -75, 96, 28);
-            ctx.fillStyle = "#87CEEB"; // Glass Reflection
-            ctx.globalAlpha = 0.5;
-            ctx.fillRect(-44, -72, 88, 22);
-            ctx.globalAlpha = 1.0;
-
-            // Side Mirrors
+            // Rear Bumper
             ctx.fillStyle = "#0a0a0a";
-            ctx.fillRect(-70, -55, 10, 18);
-            ctx.fillRect(60, -55, 10, 18);
+            ctx.fillRect(-68, 15, 136, 18);
+
+            // Custom Glowing License Plate Bracket: "SAFA'S THAR"
+            ctx.fillStyle = "#111";
+            ctx.fillRect(-38, 18, 76, 14);
+            ctx.strokeStyle = "#ffd700";
+            ctx.lineWidth = 1;
+            ctx.strokeRect(-38, 18, 76, 14);
+
+            ctx.fillStyle = "#ffd700";
+            ctx.font = "900 9px sans-serif";
+            ctx.textAlign = "center";
+            ctx.fillText("SAFA'S THAR", 0, 29);
 
             ctx.restore();
         }
 
-        // Draw Traffic Cars
+        /* --- DRAW TRAFFIC CARS (REAR VIEW) --- */
         function drawTrafficCar(x, y, scale, color) {
             ctx.save();
             ctx.translate(x, y);
             ctx.scale(scale, scale);
 
+            // Shadow
+            ctx.fillStyle = "rgba(0,0,0,0.3)";
+            ctx.beginPath();
+            ctx.ellipse(0, 25, 45, 12, 0, 0, Math.PI * 2);
+            ctx.fill();
+
             // Body
             ctx.fillStyle = color;
             ctx.beginPath();
-            ctx.roundRect(-40, -40, 80, 60, 8);
+            ctx.roundRect(-40, -35, 80, 55, 6);
             ctx.fill();
 
             // Roof
-            ctx.fillStyle = "#222";
-            ctx.fillRect(-30, -35, 60, 30);
+            ctx.fillStyle = "#151515";
+            ctx.fillRect(-30, -30, 60, 25);
 
-            // Red Rear Lights
-            ctx.fillStyle = "#ff0000";
-            ctx.fillRect(-35, 12, 15, 6);
-            ctx.fillRect(20, 12, 15, 6);
+            // Rear Red Tail Lights
+            ctx.fillStyle = "#ff1744";
+            ctx.fillRect(-36, 5, 12, 8);
+            ctx.fillRect(24, 5, 12, 8);
 
             ctx.restore();
         }
 
-        // Game Loop
+        /* --- REALISTIC AIIMS DELHI BUILDING LANDMARK --- */
+        function drawAIIMSBuilding(x, y, scale) {
+            ctx.save();
+            ctx.translate(x, y);
+            ctx.scale(scale, scale);
+
+            // Main AIIMS Outer Gate Structure
+            ctx.fillStyle = "#2c3e50";
+            ctx.fillRect(-220, -180, 440, 180);
+
+            // Architectural Pillars
+            ctx.fillStyle = "#1a252f";
+            ctx.fillRect(-200, -180, 40, 180);
+            ctx.fillRect(160, -180, 40, 180);
+            ctx.fillRect(-60, -180, 120, 180);
+
+            // Glass Entrance Panels
+            ctx.fillStyle = "rgba(52, 152, 219, 0.6)";
+            ctx.fillRect(-150, -120, 80, 120);
+            ctx.fillRect(70, -120, 80, 120);
+
+            // Glowing Main Header Board
+            ctx.fillStyle = "#004085";
+            ctx.fillRect(-180, -160, 360, 35);
+            ctx.strokeStyle = "#007bff";
+            ctx.lineWidth = 3;
+            ctx.strokeRect(-180, -160, 360, 35);
+
+            // Emblem / Medical Cross Symbol
+            ctx.fillStyle = "#ff4d6d";
+            ctx.beginPath();
+            ctx.arc(0, -143, 12, 0, Math.PI*2);
+            ctx.fill();
+            ctx.fillStyle = "#fff";
+            ctx.font = "bold 14px Arial";
+            ctx.textAlign = "center";
+            ctx.fillText("+", 0, -138);
+
+            // AIIMS Text Signboard
+            ctx.fillStyle = "#ffffff";
+            ctx.font = "900 15px Arial";
+            ctx.fillText("ALL INDIA INSTITUTE OF MEDICAL SCIENCES", 0, -170);
+            ctx.font = "bold 13px Arial";
+            ctx.fillStyle = "#ffd700";
+            ctx.fillText("📍 MAIN GATE 1 - WELCOME DR. SAFA", 0, -100);
+
+            ctx.restore();
+        }
+
+        // Main Game Loop
         function update() {
             if (!gameActive) return;
 
-            // Speed Controls
+            // Speed Acceleration Physics
             if (keys.up) {
                 speed += accel;
                 if (speed > maxSpeed) speed = maxSpeed;
             } else if (keys.down) {
-                speed -= accel * 1.5;
+                speed -= accel * 2;
                 if (speed < 0) speed = 0;
             } else {
                 speed -= decal;
                 if (speed < 0) speed = 0;
             }
 
-            // Steering Logic
-            if (speed > 5) {
-                if (keys.left) tharSpeedX = -0.025;
-                else if (keys.right) tharSpeedX = 0.025;
+            // Steering Physics
+            if (speed > 2) {
+                if (keys.left) tharSpeedX = -0.028;
+                else if (keys.right) tharSpeedX = 0.028;
                 else tharSpeedX = 0;
             } else {
                 tharSpeedX = 0;
             }
 
             tharX += tharSpeedX;
-            // Bound to road
             if (tharX < -0.85) tharX = -0.85;
             if (tharX > 0.85) tharX = 0.85;
 
-            // Distance Update
+            // Fast Distance Countdown Mechanic (Fast completion to reach AIIMS quickly)
             if (speed > 0) {
-                distanceLeft -= (speed / 360000);
+                distanceLeft -= (speed / 12000); 
                 if (distanceLeft <= 0) {
                     distanceLeft = 0;
-                    gameActive = false;
-                    document.getElementById("victoryScreen").classList.add("active");
                 }
             }
 
-            // UI Update
+            // UI HUD Update
             document.getElementById("speedVal").innerText = Math.round(speed);
             document.getElementById("distVal").innerText = distanceLeft.toFixed(1);
 
-            // Clear Background (Sky)
-            ctx.fillStyle = "#1e272e";
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            // Horizon Gradient & Mountains
-            let horizonY = canvas.height * 0.45;
-            let skyGradient = ctx.createLinearGradient(0, 0, 0, horizonY);
-            skyGradient.addColorStop(0, '#0f2027');
-            skyGradient.addColorStop(1, '#2c5364');
-            ctx.fillStyle = skyGradient;
+            // Sky Background
+            let horizonY = canvas.height * 0.42;
+            let skyGrad = ctx.createLinearGradient(0, 0, 0, horizonY);
+            skyGrad.addColorStop(0, '#02050e');
+            skyGrad.addColorStop(1, '#0f172a');
+            ctx.fillStyle = skyGrad;
             ctx.fillRect(0, 0, canvas.width, horizonY);
 
-            // Sun / Moon
-            ctx.fillStyle = "#ffd700";
+            // Moon in Sky
+            ctx.fillStyle = "#f8fafc";
+            ctx.shadowColor = "#f8fafc";
+            ctx.shadowBlur = 15;
             ctx.beginPath();
-            ctx.arc(canvas.width * 0.8, horizonY - 60, 30, 0, Math.PI * 2);
+            ctx.arc(canvas.width * 0.8, horizonY - 70, 24, 0, Math.PI * 2);
             ctx.fill();
+            ctx.shadowBlur = 0;
 
-            // Draw Road Pseudo 3D
-            roadOffset += speed * 0.1;
-            
-            let roadTopW = 40;
-            let roadBottomW = canvas.width * 0.9;
-            let roadTopX = canvas.width / 2;
-            let roadBottomX = canvas.width / 2;
+            // Pseudo 3D Road
+            roadOffset += speed * 0.15;
+            let roadTopW = 20;
+            let roadBottomW = canvas.width * 0.95;
 
-            // Off-road Grass
-            ctx.fillStyle = "#1e3799";
+            // Side Grass Terrain
+            ctx.fillStyle = "#051f11";
             ctx.fillRect(0, horizonY, canvas.width, canvas.height - horizonY);
 
-            // Road Polygon
-            ctx.fillStyle = "#2c3e50";
+            // Highway Road
+            ctx.fillStyle = "#1e293b";
             ctx.beginPath();
-            ctx.moveTo(roadTopX - roadTopW / 2, horizonY);
-            ctx.lineTo(roadTopX + roadTopW / 2, horizonY);
-            ctx.lineTo(roadBottomX + roadBottomW / 2, canvas.height);
-            ctx.lineTo(roadBottomX - roadBottomW / 2, canvas.height);
+            ctx.moveTo(canvas.width / 2 - roadTopW / 2, horizonY);
+            ctx.lineTo(canvas.width / 2 + roadTopW / 2, horizonY);
+            ctx.lineTo(canvas.width / 2 + roadBottomW / 2, canvas.height);
+            ctx.lineTo(canvas.width / 2 - roadBottomW / 2, canvas.height);
             ctx.closePath();
             ctx.fill();
 
-            // Dynamic Road Lane Markings
-            ctx.strokeStyle = "#f1c40f";
-            ctx.lineWidth = 4;
-            ctx.setLineDash([20, 20]);
-            ctx.lineDashOffset = -roadOffset % 40;
+            // Lane Dividers
+            ctx.strokeStyle = "#e2e8f0";
+            ctx.lineWidth = 3;
+            ctx.setLineDash([15, 15]);
+            ctx.lineDashOffset = -roadOffset % 30;
             ctx.beginPath();
             ctx.moveTo(canvas.width / 2, horizonY);
             ctx.lineTo(canvas.width / 2, canvas.height);
             ctx.stroke();
-            ctx.setLineDash([]); // Reset line dash
+            ctx.setLineDash([]);
 
-            // Draw Dynamic Trees/Lamps
-            trees.forEach(tree => {
-                tree.z -= speed * 0.2;
-                if (tree.z <= 0) tree.z += 1000;
+            // Draw Highway Street Lights
+            streetLamps.forEach(lamp => {
+                lamp.z -= speed * 0.25;
+                if (lamp.z <= 0) lamp.z += 1000;
 
-                let scale = 1 / (tree.z * 0.002 + 1);
-                let x = canvas.width / 2 + tree.side * (roadBottomW / 2 + 60) * scale;
+                let scale = 1 / (lamp.z * 0.0018 + 1);
+                let x = canvas.width / 2 + lamp.side * (roadBottomW / 2 + 40) * scale;
                 let y = horizonY + (canvas.height - horizonY) * scale;
 
-                // Tree Trunk & Foliage
-                ctx.fillStyle = "#27ae60";
+                ctx.fillStyle = "#ffd700";
                 ctx.beginPath();
-                ctx.arc(x, y - 20 * scale, 18 * scale, 0, Math.PI * 2);
+                ctx.arc(x, y - 30 * scale, 6 * scale, 0, Math.PI * 2);
                 ctx.fill();
             });
 
-            // Update & Render Traffic Cars (Overtaking Mechanics)
+            // RENDER REAL-LIFE AIIMS BUILDINGS AS YOU APPROACH (Distance <= 1.0 KM)
+            if (distanceLeft <= 1.0) {
+                aiimsZ -= speed * 0.2;
+                if (aiimsZ < 100) aiimsZ = 100; // Park outside gate
+
+                let scale = 1 / (aiimsZ * 0.0015 + 1);
+                let buildingX = canvas.width / 2;
+                let buildingY = horizonY + (canvas.height - horizonY) * scale * 0.75;
+
+                drawAIIMSBuilding(buildingX, buildingY, scale);
+
+                // Stop & Launch Celebration once fully arrived
+                if (distanceLeft <= 0 && aiimsZ <= 120) {
+                    gameActive = false;
+                    setTimeout(() => {
+                        document.getElementById("victoryScreen").classList.add("active");
+                    }, 800);
+                }
+            }
+
+            // Traffic Overtaking Mechanics
             traffic.forEach((car, index) => {
                 car.z -= (speed - car.speed) * 0.15;
 
-                // Overtook or out of sight reset
                 if (car.z <= 10) {
                     traffic[index] = createTrafficCar();
-                    triggerMessage(); // Trigger popup when successfully overtaking!
+                    triggerMessage(); // Throw flying love/motivation popup card
                 } else if (car.z > 1200) {
                     car.z = 1200;
                 }
@@ -613,13 +679,13 @@
                 let carXPos = canvas.width / 2 + (car.x * roadBottomW / 2) * scale;
                 let carYPos = horizonY + (canvas.height - horizonY) * scale * 0.85;
 
-                drawTrafficCar(carXPos, carYPos, scale * 0.8, car.color);
+                drawTrafficCar(carXPos, carYPos, scale * 0.75, car.color);
             });
 
-            // Draw Safa's Thar
+            // Render Safa's Rear-View Thar
             let tharCanvasX = canvas.width / 2 + (tharX * (roadBottomW / 2.3));
-            let tharCanvasY = canvas.height - 100;
-            drawThar(tharCanvasX, tharCanvasY, 0.9);
+            let tharCanvasY = canvas.height - 90;
+            drawTharRear(tharCanvasX, tharCanvasY, 0.95);
 
             requestAnimationFrame(update);
         }
@@ -629,12 +695,13 @@
             distanceLeft = 5.0;
             speed = 0;
             tharX = 0;
+            aiimsZ = 1200;
             gameActive = true;
             document.getElementById("victoryScreen").classList.remove("active");
             requestAnimationFrame(update);
         }
 
-        // Start Game
+        // Run Application
         requestAnimationFrame(update);
     </script>
 </body>
