@@ -569,11 +569,11 @@
         window.addEventListener('resize', resizeCanvas);
         resizeCanvas();
 
-        // Audio Effects via Web Audio API (REAL DIESEL THAR SOUND ADDED)
+        // Audio Effects via Web Audio API (IMPROVED REALISTIC THAR ENGINE SOUND)
         const AudioCtx = window.AudioContext || window.webkitAudioContext;
         let audioCtx = null;
-        let engineOsc = null;
-        let rumbleOsc = null;
+        let engineOsc1 = null; // Sub bass rumble
+        let engineOsc2 = null; // Diesel growl
         let engineFilter = null;
         let engineGain = null;
         let musicTimer = null;
@@ -583,36 +583,33 @@
             if (audioCtx) return;
             audioCtx = new AudioCtx();
 
-            // Real Thar Diesel Engine Setup (Rumble + Chug)
-            engineOsc = audioCtx.createOscillator();
-            rumbleOsc = audioCtx.createOscillator(); 
+            // Richer 3D Real Engine Sound (Diesel Thar Profile)
+            engineOsc1 = audioCtx.createOscillator();
+            engineOsc2 = audioCtx.createOscillator();
             engineFilter = audioCtx.createBiquadFilter();
             engineGain = audioCtx.createGain();
             
-            engineOsc.type = 'sawtooth';
-            rumbleOsc.type = 'square'; // Adds that rough diesel texture
+            engineOsc1.type = 'sawtooth';
+            engineOsc2.type = 'square';
             
-            engineOsc.frequency.setValueAtTime(35, audioCtx.currentTime);
-            rumbleOsc.frequency.setValueAtTime(17.5, audioCtx.currentTime); // Sub-octave rumble
+            engineOsc1.frequency.setValueAtTime(30, audioCtx.currentTime); // Low idle rumble
+            engineOsc2.frequency.setValueAtTime(15, audioCtx.currentTime); // Sub octave 
             
             engineFilter.type = 'lowpass';
-            engineFilter.frequency.setValueAtTime(120, audioCtx.currentTime);
+            engineFilter.frequency.setValueAtTime(100, audioCtx.currentTime); // Muffled heavy block
             
-            engineGain.gain.setValueAtTime(0.12, audioCtx.currentTime); // Slightly deeper
+            engineGain.gain.setValueAtTime(0.08, audioCtx.currentTime);
             
-            engineOsc.connect(engineFilter);
-            rumbleOsc.connect(engineFilter);
+            engineOsc1.connect(engineFilter);
+            engineOsc2.connect(engineFilter);
             engineFilter.connect(engineGain);
             engineGain.connect(audioCtx.destination);
             
-            engineOsc.start();
-            rumbleOsc.start();
+            engineOsc1.start();
+            engineOsc2.start();
 
             // Background Driving Beat/Melody
-            let melody = [
-                220.00, 0, 261.63, 0, 329.63, 0, 293.66, 0, 
-                220.00, 220.00, 261.63, 329.63, 392.00, 0, 0, 0
-            ];
+            let melody = [220.00, 0, 261.63, 0, 329.63, 0, 293.66, 0, 220.00, 220.00, 261.63, 329.63, 392.00, 0, 0, 0];
             let bassMelody = [110, 0, 130.81, 0, 164.81, 0, 146.83, 0];
             
             let noteIdx = 0;
@@ -650,6 +647,7 @@
             }, 200);
         }
 
+        // Dedicated Rich Friendship/Victory Melody
         function playDostiSong() {
             if (musicTimer) clearInterval(musicTimer);
             if (engineGain) engineGain.gain.setTargetAtTime(0, audioCtx.currentTime, 0.5);
@@ -663,20 +661,17 @@
                 try {
                     let time = audioCtx.currentTime;
                     let freq = dostiNotes[nIdx % dostiNotes.length];
-                    
                     let osc1 = audioCtx.createOscillator();
                     let osc2 = audioCtx.createOscillator();
                     let gain = audioCtx.createGain();
-                    
                     osc1.type = 'triangle';
                     osc2.type = 'sine';
                     osc1.frequency.setValueAtTime(freq, time);
-                    osc2.frequency.setValueAtTime(freq * 1.01, time);
-                    
+                    osc2.frequency.setValueAtTime(freq * 1.01, time); 
                     gain.gain.setValueAtTime(0.15, time);
                     gain.gain.exponentialRampToValueAtTime(0.001, time + 0.4);
-                    
-                    osc1.connect(gain); osc2.connect(gain);
+                    osc1.connect(gain);
+                    osc2.connect(gain);
                     gain.connect(audioCtx.destination);
                     osc1.start(time); osc2.start(time);
                     osc1.stop(time + 0.4); osc2.stop(time + 0.4);
@@ -686,13 +681,12 @@
         }
 
         function updateEngineAudio(currentSpeed) {
-            if (!audioCtx || !engineOsc) return;
-            let pitch = 35 + (currentSpeed * 0.8);
-            let rumblePitch = 17.5 + (currentSpeed * 0.4);
-            let filterFreq = 120 + (currentSpeed * 10);
-            
-            engineOsc.frequency.setTargetAtTime(pitch, audioCtx.currentTime, 0.1);
-            if(rumbleOsc) rumbleOsc.frequency.setTargetAtTime(rumblePitch, audioCtx.currentTime, 0.1);
+            if (!audioCtx || !engineOsc1) return;
+            // Diesel engine rev logic
+            let basePitch = 25 + (currentSpeed * 0.8);
+            let filterFreq = 100 + (currentSpeed * 10);
+            engineOsc1.frequency.setTargetAtTime(basePitch, audioCtx.currentTime, 0.1);
+            engineOsc2.frequency.setTargetAtTime(basePitch / 2, audioCtx.currentTime, 0.1);
             engineFilter.frequency.setTargetAtTime(filterFreq, audioCtx.currentTime, 0.1);
         }
 
@@ -703,9 +697,9 @@
                 let osc = audioCtx.createOscillator();
                 let gain = audioCtx.createGain();
                 osc.type = 'square';
-                osc.frequency.setValueAtTime(100, time);
+                osc.frequency.setValueAtTime(120, time);
                 osc.frequency.exponentialRampToValueAtTime(20, time + 0.5);
-                gain.gain.setValueAtTime(0.5, time);
+                gain.gain.setValueAtTime(0.6, time);
                 gain.gain.exponentialRampToValueAtTime(0.01, time + 0.5);
                 osc.connect(gain); gain.connect(audioCtx.destination);
                 osc.start(time); osc.stop(time + 0.5);
@@ -772,6 +766,7 @@
         bindTouch('btnBrake', 'down');
         bindTouch('btnNitro', 'nitro');
 
+        // Setup environment (Poles and Trees)
         for (let i = 0; i < 20; i++) {
             streetLamps.push({ absZ: i * 80, side: i % 2 === 0 ? -1 : 1 });
             environmentTrees.push({ absZ: (i * 90) + 40, side: i % 2 === 0 ? 1 : -1, type: Math.random() > 0.5 ? 1 : 2 });
@@ -795,57 +790,79 @@
             traffic.push(createTrafficVehicle(i, 600 + Math.random() * 800));
         }
 
+        /* --- ACCURATE MAHINDRA THAR 360 DEGREE ROTATION (PERSPECTIVE) --- */
         let showroomAngle = 0;
 
         function renderShowroomThar(targetCtx, angle) {
             targetCtx.save();
             let normAngle = (angle % (Math.PI * 2) + Math.PI * 2) % (Math.PI * 2);
             let isFront = normAngle > Math.PI * 0.5 && normAngle < Math.PI * 1.5;
-            let facingRatio = Math.sin(normAngle); 
             let sidePerspective = Math.cos(normAngle); 
 
+            // Shadow
             targetCtx.fillStyle = "rgba(0, 0, 0, 0.6)";
-            targetCtx.beginPath(); targetCtx.ellipse(0, 45, 95, 22, 0, 0, Math.PI * 2); targetCtx.fill();
+            targetCtx.beginPath();
+            targetCtx.ellipse(0, 45, 95, 22, 0, 0, Math.PI * 2);
+            targetCtx.fill();
 
+            // Wheels
             targetCtx.fillStyle = "#09090b";
             let wheelXOffset = sidePerspective * 65;
             targetCtx.fillRect(-78 + wheelXOffset * 0.2, -10, 24, 52);
             targetCtx.fillRect(54 + wheelXOffset * 0.2, -10, 24, 52);
 
+            // Black SUV Boxy Body
             targetCtx.fillStyle = "#020617";
             targetCtx.beginPath();
             if(targetCtx.roundRect) targetCtx.roundRect(-75, -60, 150, 85, 10); else targetCtx.rect(-75, -60, 150, 85);
             targetCtx.fill();
 
+            // Fender Flares
             targetCtx.fillStyle = "#1e293b";
-            targetCtx.fillRect(-82, 0, 16, 25); targetCtx.fillRect(66, 0, 16, 25);
+            targetCtx.fillRect(-82, 0, 16, 25);
+            targetCtx.fillRect(66, 0, 16, 25);
 
-            targetCtx.fillStyle = "#0f172a"; targetCtx.fillRect(-58, -55, 116, 38);
-            targetCtx.fillStyle = "rgba(56, 189, 248, 0.25)"; targetCtx.fillRect(-50, -50, 100, 30);
+            // Cabin Roof / Windows
+            targetCtx.fillStyle = "#0f172a";
+            targetCtx.fillRect(-58, -55, 116, 38);
+            targetCtx.fillStyle = "rgba(56, 189, 248, 0.25)";
+            targetCtx.fillRect(-50, -50, 100, 30);
 
             if (isFront) {
-                targetCtx.fillStyle = "#1e293b"; targetCtx.fillRect(-45, -15, 90, 35);
+                targetCtx.fillStyle = "#1e293b";
+                targetCtx.fillRect(-45, -15, 90, 35);
+                
                 targetCtx.fillStyle = "#000";
-                for (let g = -32; g <= 32; g += 11) targetCtx.fillRect(g, -10, 6, 24);
+                for (let g = -32; g <= 32; g += 11) {
+                    targetCtx.fillRect(g, -10, 6, 24);
+                }
 
-                targetCtx.fillStyle = "#fef08a"; targetCtx.shadowColor = "#fde047"; targetCtx.shadowBlur = 15;
+                targetCtx.fillStyle = "#fef08a";
+                targetCtx.shadowColor = "#fde047"; targetCtx.shadowBlur = 15;
                 targetCtx.beginPath(); targetCtx.arc(-55, -2, 11, 0, Math.PI * 2); targetCtx.fill();
                 targetCtx.beginPath(); targetCtx.arc(55, -2, 11, 0, Math.PI * 2); targetCtx.fill();
                 targetCtx.shadowBlur = 0;
 
-                targetCtx.fillStyle = "#334155"; targetCtx.fillRect(-65, 20, 130, 18);
-                targetCtx.fillStyle = "#ffd700"; targetCtx.font = "900 10px sans-serif"; targetCtx.textAlign = "center";
+                targetCtx.fillStyle = "#334155";
+                targetCtx.fillRect(-65, 20, 130, 18);
+                targetCtx.fillStyle = "#ffd700";
+                targetCtx.font = "900 10px sans-serif";
+                targetCtx.textAlign = "center";
                 targetCtx.fillText("THAR • SAFA", 0, 33);
             } else {
                 targetCtx.fillStyle = "#000";
                 targetCtx.beginPath(); targetCtx.arc(0, -5, 28, 0, Math.PI * 2); targetCtx.fill();
                 targetCtx.strokeStyle = "#475569"; targetCtx.lineWidth = 4; targetCtx.stroke();
 
-                targetCtx.fillStyle = "#ef4444"; targetCtx.shadowColor = "#ff0000"; targetCtx.shadowBlur = 12;
-                targetCtx.fillRect(-68, -20, 12, 26); targetCtx.fillRect(56, -20, 12, 26);
+                targetCtx.fillStyle = "#ef4444";
+                targetCtx.shadowColor = "#ff0000"; targetCtx.shadowBlur = 12;
+                targetCtx.fillRect(-68, -20, 12, 26);
+                targetCtx.fillRect(56, -20, 12, 26);
                 targetCtx.shadowBlur = 0;
 
-                targetCtx.fillStyle = "#ffd700"; targetCtx.font = "900 10px sans-serif"; targetCtx.textAlign = "center";
+                targetCtx.fillStyle = "#ffd700";
+                targetCtx.font = "900 10px sans-serif";
+                targetCtx.textAlign = "center";
                 targetCtx.fillText("SAFA'S 4x4", 0, 33);
             }
             targetCtx.restore();
@@ -856,8 +873,10 @@
             let w = showroomCanvas.width;
             let h = showroomCanvas.height;
             showCtx.clearRect(0, 0, w, h);
+            let cx = w / 2;
+            let cy = h / 2 + 30;
             showCtx.save();
-            showCtx.translate(w / 2, h / 2 + 30);
+            showCtx.translate(cx, cy);
             renderShowroomThar(showCtx, showroomAngle);
             showCtx.restore();
             showroomAngle += 0.03;
@@ -873,98 +892,139 @@
             requestAnimationFrame(update);
         }
 
+        /* --- 3D-ENHANCED REAR THAR DRIVE VIEW --- */
         function drawTharRear(x, y, scale) {
             ctx.save();
             ctx.translate(x, y);
             ctx.scale(scale, scale);
-            ctx.fillStyle = "rgba(0, 0, 0, 0.65)";
-            ctx.beginPath(); ctx.ellipse(0, 38, 80, 18, 0, 0, Math.PI * 2); ctx.fill();
             
-            ctx.fillStyle = "#0a0a0a"; ctx.fillRect(-82, -18, 26, 56); ctx.fillRect(56, -18, 26, 56);  
-            
-            ctx.fillStyle = "#020617"; 
-            ctx.beginPath(); if (ctx.roundRect) ctx.roundRect(-68, -60, 136, 86, 8); else ctx.rect(-68, -60, 136, 86); ctx.fill();
-            
-            ctx.fillStyle = "#0b1329"; ctx.fillRect(-52, -52, 104, 36);
+            // Drop Shadow
+            ctx.fillStyle = "rgba(0, 0, 0, 0.7)";
+            ctx.beginPath();
+            ctx.ellipse(0, 42, 85, 20, 0, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Tires (Thick 3D Look)
+            let tireGrad = ctx.createLinearGradient(0, -20, 0, 40);
+            tireGrad.addColorStop(0, "#27272a");
+            tireGrad.addColorStop(1, "#000000");
+            ctx.fillStyle = tireGrad;
+            ctx.fillRect(-85, -18, 30, 60); 
+            ctx.fillRect(55, -18, 30, 60);  
+
+            // Main Body 3D Volume
+            let bodyGrad = ctx.createLinearGradient(0, -60, 0, 20);
+            bodyGrad.addColorStop(0, "#1e293b"); // Roof reflection
+            bodyGrad.addColorStop(0.3, "#020617"); // Dark mid
+            bodyGrad.addColorStop(1, "#000000"); // Base
+            ctx.fillStyle = bodyGrad;
+            ctx.beginPath();
+            if (ctx.roundRect) ctx.roundRect(-70, -65, 140, 92, 10); else ctx.rect(-70, -65, 140, 92);
+            ctx.fill();
+
+            // Rear Window
+            let winGrad = ctx.createLinearGradient(0, -55, 0, -20);
+            winGrad.addColorStop(0, "#38bdf8");
+            winGrad.addColorStop(1, "#0f172a");
+            ctx.fillStyle = winGrad;
+            ctx.fillRect(-54, -55, 108, 38);
+
+            // Spare Tire (3D Layered)
             ctx.fillStyle = "#030712";
-            ctx.beginPath(); ctx.arc(0, -6, 28, 0, Math.PI * 2); ctx.fill();
-            ctx.strokeStyle = "#374151"; ctx.lineWidth = 4; ctx.stroke();
+            ctx.beginPath(); ctx.arc(0, -6, 32, 0, Math.PI * 2); ctx.fill();
+            ctx.strokeStyle = "#475569"; ctx.lineWidth = 5; ctx.stroke();
+            ctx.beginPath(); ctx.arc(0, -6, 12, 0, Math.PI * 2); ctx.fillStyle = "#1e293b"; ctx.fill();
+
+            // Tail Lights Glow
+            ctx.fillStyle = "#ef4444";
+            ctx.shadowColor = "#ff0000"; ctx.shadowBlur = 15;
+            ctx.fillRect(-68, -26, 14, 28);
+            ctx.fillRect(54, -26, 14, 28);
+            ctx.shadowBlur = 0;
+
+            // Bumper & Number Plate
+            ctx.fillStyle = "#0f172a"; ctx.fillRect(-72, 18, 144, 20); // Bumper
+            ctx.fillStyle = "#ffffff"; ctx.fillRect(-40, 22, 80, 14); // Plate
+            ctx.strokeStyle = "#ffd700"; ctx.lineWidth = 2; ctx.strokeRect(-40, 22, 80, 14);
+            ctx.fillStyle = "#000000"; ctx.font = "900 10px sans-serif"; ctx.textAlign = "center";
+            ctx.fillText("SAFA'S THAR", 0, 33);
             
-            ctx.fillStyle = "#ef4444"; ctx.shadowColor = "#ff0000"; ctx.shadowBlur = 12;
-            ctx.fillRect(-65, -24, 12, 26); ctx.fillRect(53, -24, 12, 26); ctx.shadowBlur = 0;
-            
-            ctx.fillStyle = "#030712"; ctx.fillRect(-70, 18, 140, 18);
-            ctx.fillStyle = "#0f172a"; ctx.fillRect(-40, 20, 80, 14);
-            ctx.strokeStyle = "#ffd700"; ctx.lineWidth = 1; ctx.strokeRect(-40, 20, 80, 14);
-            ctx.fillStyle = "#ffd700"; ctx.font = "900 9px sans-serif"; ctx.textAlign = "center";
-            ctx.fillText("SAFA'S THAR", 0, 31);
             ctx.restore();
         }
 
-        /* --- DETAILED TRAFFIC CARS FIX --- */
+        /* --- 3D DETAILED TRAFFIC --- */
         function drawVehicle(x, y, scale, type) {
             ctx.save();
             ctx.translate(x, y);
             ctx.scale(scale, scale);
             
-            // Add shadow for all vehicles for natural feel
-            ctx.fillStyle = "rgba(0,0,0,0.5)";
-            ctx.beginPath(); ctx.ellipse(0, type === 'superbike' ? 10 : 15, type === 'superbike' ? 20 : 50, type === 'superbike' ? 10 : 25, 0, 0, Math.PI*2); ctx.fill();
+            // Drop Shadow for depth
+            ctx.fillStyle = "rgba(0,0,0,0.6)";
+            ctx.beginPath(); ctx.ellipse(0, 25, 45, 15, 0, 0, Math.PI*2); ctx.fill();
 
             if (type === 'superbike') {
-                // Tires
-                ctx.fillStyle = "#111"; ctx.fillRect(-8, -15, 16, 45); 
-                // Body
-                ctx.fillStyle = "#ea580c"; ctx.beginPath(); if(ctx.roundRect) ctx.roundRect(-14, -26, 28, 30, 8); else ctx.rect(-14, -26, 28, 30); ctx.fill();
-                // Windshield
-                ctx.fillStyle = "#0f172a"; ctx.fillRect(-10, -22, 20, 10);
-                // Rider Silhouette
-                ctx.fillStyle = "#1e293b"; ctx.beginPath(); ctx.arc(0, -15, 12, 0, Math.PI*2); ctx.fill();
-                // Taillight
-                ctx.fillStyle = "#ef4444"; ctx.shadowColor = "#ff0000"; ctx.shadowBlur = 10; ctx.fillRect(-6, 2, 12, 6); ctx.shadowBlur = 0;
+                ctx.fillStyle = "#18181b"; ctx.fillRect(-8, -10, 16, 40); // Tires
+                let bGrad = ctx.createLinearGradient(0, -30, 0, 0);
+                bGrad.addColorStop(0, "#fb923c"); bGrad.addColorStop(1, "#c2410c");
+                ctx.fillStyle = bGrad; ctx.fillRect(-16, -26, 32, 24); // Body
+                ctx.fillStyle = "#ef4444"; ctx.fillRect(-5, -2, 10, 6); // Tail light
             } else if (type === 'swift_white') {
-                // White Hatchback Body
-                ctx.fillStyle = "#f8fafc"; 
-                ctx.beginPath(); if(ctx.roundRect) ctx.roundRect(-38, -36, 76, 60, 12); else ctx.rect(-38, -36, 76, 60); ctx.fill();
-                // Rear Window
-                ctx.fillStyle = "#0f172a"; ctx.beginPath(); if(ctx.roundRect) ctx.roundRect(-30, -32, 60, 20, 5); else ctx.rect(-30, -32, 60, 20); ctx.fill();
-                // Roof shadow/curve
-                ctx.fillStyle = "#e2e8f0"; ctx.fillRect(-34, -10, 68, 20);
-                // Taillights
-                ctx.fillStyle = "#ef4444"; ctx.shadowColor = "#ff0000"; ctx.shadowBlur = 10; 
-                ctx.beginPath(); if(ctx.roundRect) ctx.roundRect(-36, 12, 14, 10, 3); else ctx.rect(-36, 12, 14, 10); ctx.fill();
-                ctx.beginPath(); if(ctx.roundRect) ctx.roundRect(22, 12, 14, 10, 3); else ctx.rect(22, 12, 14, 10); ctx.fill();
-                ctx.shadowBlur = 0;
-                // License Plate
-                ctx.fillStyle = "#fbbf24"; ctx.fillRect(-12, 14, 24, 8);
+                // Tires
+                ctx.fillStyle = "#18181b"; ctx.fillRect(-42, 5, 12, 20); ctx.fillRect(30, 5, 12, 20);
+                // Body 3D Volume
+                let cGrad = ctx.createLinearGradient(0, -40, 0, 10);
+                cGrad.addColorStop(0, "#ffffff"); cGrad.addColorStop(1, "#94a3b8");
+                ctx.fillStyle = cGrad;
+                ctx.beginPath(); if(ctx.roundRect) ctx.roundRect(-40, -36, 80, 54, 8); else ctx.rect(-40, -36, 80, 54); ctx.fill();
+                // Windshield
+                ctx.fillStyle = "#0f172a"; ctx.fillRect(-32, -30, 64, 22);
+                // Tail lights
+                ctx.fillStyle = "#ef4444"; ctx.fillRect(-36, 8, 12, 10); ctx.fillRect(24, 8, 12, 10);
             } else {
-                // Sports Red Body
-                ctx.fillStyle = "#dc2626";
-                ctx.beginPath(); if(ctx.roundRect) ctx.roundRect(-42, -32, 84, 55, 10); else ctx.rect(-42, -32, 84, 55); ctx.fill();
-                // Sleek Rear Window
-                ctx.fillStyle = "#020617"; ctx.beginPath(); ctx.moveTo(-32, -28); ctx.lineTo(32, -28); ctx.lineTo(26, -10); ctx.lineTo(-26, -10); ctx.fill();
-                // Spoiler
-                ctx.fillStyle = "#111"; ctx.fillRect(-38, 18, 76, 6);
-                // Taillights
-                ctx.fillStyle = "#ff0000"; ctx.shadowColor = "#ff0000"; ctx.shadowBlur = 15; 
-                ctx.fillRect(-38, 8, 22, 6); ctx.fillRect(16, 8, 22, 6); ctx.shadowBlur = 0;
-                // Exhaust
-                ctx.fillStyle = "#cbd5e1"; ctx.beginPath(); ctx.arc(-20, 25, 4, 0, Math.PI*2); ctx.arc(20, 25, 4, 0, Math.PI*2); ctx.fill();
+                // Sports Red / Black SUV
+                let isRed = type === 'sports_red';
+                ctx.fillStyle = "#18181b"; ctx.fillRect(-46, 5, 14, 22); ctx.fillRect(32, 5, 14, 22);
+                
+                let sGrad = ctx.createLinearGradient(0, -30, 0, 10);
+                sGrad.addColorStop(0, isRed ? "#f87171" : "#334155");
+                sGrad.addColorStop(1, isRed ? "#991b1b" : "#020617");
+                ctx.fillStyle = sGrad;
+                
+                ctx.beginPath(); if(ctx.roundRect) ctx.roundRect(-44, -28, 88, 48, 6); else ctx.rect(-44, -28, 88, 48); ctx.fill();
+                
+                ctx.fillStyle = "#020617"; ctx.fillRect(-34, -24, 68, 18); // Glass
+                ctx.fillStyle = "#ff0000"; ctx.fillRect(-40, 8, 16, 6); ctx.fillRect(24, 8, 16, 6); // Tail lights
             }
             ctx.restore();
         }
 
+        /* --- REALISTIC AIIMS BUILDING (3D PERSPECTIVE) --- */
         function drawAIIMSBuilding(x, y, scale) {
             ctx.save();
             ctx.translate(x, y);
             ctx.scale(scale, scale);
 
-            ctx.fillStyle = "rgba(0,0,0,0.4)";
-            ctx.beginPath(); ctx.ellipse(0, 0, 400, 40, 0, 0, Math.PI*2); ctx.fill();
+            // Ground/Shadow Base underneath the building
+            ctx.fillStyle = "rgba(0,0,0,0.5)";
+            ctx.beginPath(); ctx.ellipse(0, 0, 420, 50, 0, 0, Math.PI*2); ctx.fill();
 
-            ctx.fillStyle = "#cbd5e1"; ctx.fillRect(-340, -280, 680, 280);
-            ctx.fillStyle = "#94a3b8"; ctx.fillRect(-340, -280, 40, 280); ctx.fillRect(300, -280, 40, 280);
+            // Main Building Concrete Facade with 3D Gradients
+            let bGrad = ctx.createLinearGradient(0, -280, 0, 0);
+            bGrad.addColorStop(0, "#e2e8f0");
+            bGrad.addColorStop(1, "#94a3b8");
+            ctx.fillStyle = bGrad;
+            ctx.fillRect(-340, -280, 680, 280);
 
+            // Structural depth shadows (Side walls to make it pop)
+            ctx.fillStyle = "#64748b";
+            ctx.fillRect(-340, -280, 40, 280);
+            ctx.fillRect(300, -280, 40, 280);
+            
+            // Roof overhang
+            ctx.fillStyle = "#475569";
+            ctx.fillRect(-350, -290, 700, 10);
+
+            // Grid Windows (Dark blue/black reflection)
             ctx.fillStyle = "#0f172a";
             for(let r = -250; r < -50; r += 26) {
                 for(let c = -290; c < 290; c += 30) {
@@ -972,23 +1032,36 @@
                 }
             }
 
+            // Greenery / Trees Base in front
             ctx.fillStyle = "#166534";
             for(let t = -330; t <= 330; t += 35) {
                 ctx.beginPath(); ctx.arc(t, -25, 35, 0, Math.PI * 2); ctx.fill();
             }
 
-            ctx.fillStyle = "#e2e8f0"; ctx.fillRect(-60, -60, 120, 60);
-            ctx.fillStyle = "#020617"; ctx.fillRect(-40, -40, 80, 40);
+            // Entrance Door Pillars 3D
+            ctx.fillStyle = "#cbd5e1";
+            ctx.fillRect(-60, -60, 120, 60);
+            ctx.fillStyle = "#020617";
+            ctx.fillRect(-40, -40, 80, 40);
 
-            ctx.fillStyle = "#ffffff"; ctx.fillRect(-320, -345, 640, 65);
-            ctx.fillStyle = "#94a3b8"; ctx.fillRect(-320, -280, 640, 8);
+            // Official Top Header Frame
+            ctx.fillStyle = "#ffffff";
+            ctx.fillRect(-320, -355, 640, 65);
+            ctx.fillStyle = "#94a3b8";
+            ctx.fillRect(-320, -290, 640, 8);
 
-            ctx.fillStyle = "#701a75"; ctx.font = "bold 16px Arial"; ctx.textAlign = "center";
-            ctx.fillText("अखिल भारतीय आयुर्विज्ञान संस्थान", 0, -320);
+            // Devanagari Hindi Text Signboard
+            ctx.fillStyle = "#701a75";
+            ctx.font = "bold 16px Arial";
+            ctx.textAlign = "center";
+            ctx.fillText("अखिल भारतीय आयुर्विज्ञान संस्थान", 0, -330);
 
-            ctx.fillStyle = "#1e1b4b"; ctx.font = "900 19px Arial";
-            ctx.fillText("ALL INDIA INSTITUTE OF MEDICAL SCIENCES", 0, -295);
+            // English Signboard
+            ctx.fillStyle = "#1e1b4b";
+            ctx.font = "900 19px Arial";
+            ctx.fillText("ALL INDIA INSTITUTE OF MEDICAL SCIENCES", 0, -305);
 
+            // Red Medical Crosses on Wings
             ctx.fillStyle = "#ef4444";
             ctx.fillRect(-300, -255, 26, 10); ctx.fillRect(-292, -263, 10, 26);
             ctx.fillRect(274, -255, 26, 10); ctx.fillRect(282, -263, 10, 26);
@@ -996,13 +1069,19 @@
             ctx.restore();
         }
 
+        // Environment Trees Drawing
         function drawTree(x, y, scale, type) {
             ctx.save();
             ctx.translate(x, y);
             ctx.scale(scale, scale);
-            ctx.fillStyle = "#451a03"; ctx.fillRect(-5, -40, 10, 40);
+            // Trunk
+            ctx.fillStyle = "#451a03";
+            ctx.fillRect(-5, -40, 10, 40);
+            // Leaves
             if (type === 1) {
-                ctx.fillStyle = "#064e3b";
+                let tGrad = ctx.createRadialGradient(0, -45, 10, 0, -45, 35);
+                tGrad.addColorStop(0, "#10b981"); tGrad.addColorStop(1, "#064e3b");
+                ctx.fillStyle = tGrad;
                 ctx.beginPath(); ctx.arc(0, -50, 30, 0, Math.PI*2); ctx.fill();
                 ctx.beginPath(); ctx.arc(-15, -35, 20, 0, Math.PI*2); ctx.fill();
                 ctx.beginPath(); ctx.arc(15, -35, 20, 0, Math.PI*2); ctx.fill();
@@ -1010,6 +1089,8 @@
                 ctx.fillStyle = "#065f46";
                 ctx.beginPath();
                 ctx.moveTo(0, -90); ctx.lineTo(-30, -30); ctx.lineTo(30, -30); ctx.fill();
+                ctx.fillStyle = "#047857";
+                ctx.beginPath();
                 ctx.moveTo(0, -60); ctx.lineTo(-35, -10); ctx.lineTo(35, -10); ctx.fill();
             }
             ctx.restore();
@@ -1064,7 +1145,9 @@
 
         function restartFromCrash() {
             document.getElementById("crashModal").classList.remove("active");
-            speed = 0; tharX = 0; gameActive = true;
+            speed = 0;
+            tharX = 0;
+            gameActive = true;
             requestAnimationFrame(update);
         }
 
@@ -1081,6 +1164,7 @@
             }
         }
 
+        /* --- MAIN RENDER LOOP --- */
         function update() {
             if (!gameActive && shakeTime <= 0) return;
 
@@ -1121,7 +1205,7 @@
             let speedDelta = speed * 0.16;
             worldZ += speedDelta;
 
-            if (speed > 0 && distanceLeft > 0) {
+            if (speed > 0) {
                 distanceLeft -= (speed / 36000); 
                 if (distanceLeft <= 0) distanceLeft = 0;
             }
@@ -1131,22 +1215,37 @@
 
             let horizonY = canvas.height * 0.46; 
 
+            // Environment Background (Sky & Mountains)
             let skyGrad = ctx.createLinearGradient(0, 0, 0, horizonY);
-            skyGrad.addColorStop(0, '#020617'); skyGrad.addColorStop(1, '#0f172a');
-            ctx.fillStyle = skyGrad; ctx.fillRect(0, 0, canvas.width, horizonY);
+            skyGrad.addColorStop(0, '#020617');
+            skyGrad.addColorStop(1, '#0f172a');
+            ctx.fillStyle = skyGrad;
+            ctx.fillRect(0, 0, canvas.width, horizonY);
             
+            // Distant Mountains
             ctx.fillStyle = "#0b132b";
-            ctx.beginPath(); ctx.moveTo(0, horizonY); ctx.lineTo(canvas.width * 0.1, horizonY - 40);
-            ctx.lineTo(canvas.width * 0.3, horizonY - 10); ctx.lineTo(canvas.width * 0.6, horizonY - 60);
-            ctx.lineTo(canvas.width * 0.8, horizonY - 20); ctx.lineTo(canvas.width, horizonY - 50);
-            ctx.lineTo(canvas.width, horizonY); ctx.fill();
+            ctx.beginPath();
+            ctx.moveTo(0, horizonY);
+            ctx.lineTo(canvas.width * 0.1, horizonY - 40);
+            ctx.lineTo(canvas.width * 0.3, horizonY - 10);
+            ctx.lineTo(canvas.width * 0.6, horizonY - 60);
+            ctx.lineTo(canvas.width * 0.8, horizonY - 20);
+            ctx.lineTo(canvas.width, horizonY - 50);
+            ctx.lineTo(canvas.width, horizonY);
+            ctx.fill();
 
+            // Pseudo 3D Road
             roadOffset = worldZ;
             let roadTopW = 35;
             let roadBottomW = canvas.width * 0.92;
 
-            ctx.fillStyle = "#064e3b"; ctx.fillRect(0, horizonY, canvas.width, canvas.height - horizonY);
-            ctx.fillStyle = "#022c22";
+            // Grassy terrain with moving stripes for speed effect
+            let grassColor1 = "#064e3b";
+            let grassColor2 = "#022c22";
+            ctx.fillStyle = grassColor1;
+            ctx.fillRect(0, horizonY, canvas.width, canvas.height - horizonY);
+            
+            ctx.fillStyle = grassColor2;
             for(let i = 0; i < 20; i++) {
                 let relZ = (i * 100) - (roadOffset % 100);
                 if (relZ > 0) {
@@ -1158,26 +1257,38 @@
                 }
             }
 
+            // Road Surface
             ctx.fillStyle = "#1e293b";
-            ctx.beginPath(); ctx.moveTo(canvas.width / 2 - roadTopW / 2, horizonY);
+            ctx.beginPath();
+            ctx.moveTo(canvas.width / 2 - roadTopW / 2, horizonY);
             ctx.lineTo(canvas.width / 2 + roadTopW / 2, horizonY);
             ctx.lineTo(canvas.width / 2 + roadBottomW / 2, canvas.height);
             ctx.lineTo(canvas.width / 2 - roadBottomW / 2, canvas.height);
             ctx.closePath(); ctx.fill();
 
+            // Road Borders
             ctx.strokeStyle = "#ffd700"; ctx.lineWidth = 4;
             ctx.beginPath();
             ctx.moveTo(canvas.width / 2 - roadTopW / 2, horizonY); ctx.lineTo(canvas.width / 2 - roadBottomW / 2, canvas.height);
             ctx.moveTo(canvas.width / 2 + roadTopW / 2, horizonY); ctx.lineTo(canvas.width / 2 + roadBottomW / 2, canvas.height);
             ctx.stroke();
 
-            ctx.strokeStyle = "#f8fafc"; ctx.lineWidth = 3; ctx.setLineDash([16, 16]); ctx.lineDashOffset = -roadOffset % 32;
-            ctx.beginPath(); ctx.moveTo(canvas.width / 2, horizonY); ctx.lineTo(canvas.width / 2, canvas.height); ctx.stroke();
+            // Center Dash Line
+            ctx.strokeStyle = "#f8fafc"; ctx.lineWidth = 3;
+            ctx.setLineDash([16, 16]);
+            ctx.lineDashOffset = -roadOffset % 32;
+            ctx.beginPath(); 
+            ctx.moveTo(canvas.width / 2, horizonY); ctx.lineTo(canvas.width / 2, canvas.height); 
+            ctx.stroke();
             ctx.setLineDash([]);
 
+            // Scenery: Trees
             environmentTrees.forEach(tree => {
                 let relativeZ = tree.absZ - worldZ;
-                if (relativeZ < 0) { tree.absZ += 1800; tree.type = Math.random() > 0.5 ? 1 : 2; }
+                if (relativeZ < 0) {
+                    tree.absZ += 1800;
+                    tree.type = Math.random() > 0.5 ? 1 : 2; 
+                }
                 if (relativeZ > 0 && relativeZ < 1500) {
                     let scale = 1 / (relativeZ * 0.0018 + 1);
                     let x = canvas.width / 2 + tree.side * (roadBottomW / 2 + 180) * scale;
@@ -1186,14 +1297,17 @@
                 }
             });
 
+            // Scenery: Highway Poles
             streetLamps.forEach(lamp => {
                 let relativeZ = lamp.absZ - worldZ;
                 if (relativeZ < 0) lamp.absZ += 1600;
+
                 if (relativeZ > 0 && relativeZ < 1500) {
                     let scale = 1 / (relativeZ * 0.0018 + 1);
                     let x = canvas.width / 2 + lamp.side * (roadBottomW / 2 + 45) * scale;
                     let y = horizonY + (canvas.height - horizonY) * scale;
-                    ctx.fillStyle = "#475569"; ctx.fillRect(x - 2*scale, y - 80*scale, 4*scale, 80*scale);
+                    ctx.fillStyle = "#475569";
+                    ctx.fillRect(x - 2*scale, y - 80*scale, 4*scale, 80*scale);
                     ctx.fillStyle = "#ffd700"; ctx.beginPath(); ctx.arc(x, y - 80 * scale, 6 * scale, 0, Math.PI * 2); ctx.fill();
                     ctx.shadowColor = "#fde047"; ctx.shadowBlur = 15;
                     ctx.beginPath(); ctx.arc(x, y - 80 * scale, 3 * scale, 0, Math.PI * 2); ctx.fill();
@@ -1201,11 +1315,12 @@
                 }
             });
 
-            /* --- FIXED AIIMS LOGIC --- */
-            if (distanceLeft <= 1.5) {
-                // Map the remaining distance directly to visual Z depth
-                let relAiimsZ = (distanceLeft / 1.5) * 3000;
-                if (relAiimsZ < 60) relAiimsZ = 60; // Final stop perspective
+            // FIX: Direct mapping for AIIMS Building Logic
+            if (distanceLeft <= 1.0) {
+                // The building's Z distance strictly matches the actual distance left.
+                // At distanceLeft = 1.0 KM, relAiimsZ = 1500 (far away but visible).
+                // At distanceLeft = 0.0 KM, relAiimsZ = 0 (Right in front of the camera).
+                let relAiimsZ = distanceLeft * 1500; 
 
                 let scale = 1 / (relAiimsZ * 0.0018 + 1);
                 let bX = canvas.width / 2;
@@ -1213,18 +1328,15 @@
                 
                 drawAIIMSBuilding(bX, bY, scale);
 
-                // Auto stop logic when completely close
                 if (distanceLeft <= 0) {
-                    speed = speed * 0.95; // Natural smooth brake
-                    if (speed < 1) {
-                        gameActive = false;
-                        setTimeout(() => {
-                            document.getElementById("secretLockScreen").classList.add("active");
-                        }, 1000);
-                    }
+                    gameActive = false;
+                    setTimeout(() => {
+                        document.getElementById("secretLockScreen").classList.add("active");
+                    }, 800);
                 }
             }
 
+            // Independent Traffic
             traffic.forEach((car, index) => {
                 car.absZ += car.speed * 0.16;
                 let relativeZ = car.absZ - worldZ;
@@ -1244,10 +1356,12 @@
                     let scale = 1 / (relativeZ * 0.0015 + 1);
                     let carXPos = canvas.width / 2 + (car.x * roadBottomW / 2) * scale;
                     let carYPos = horizonY + (canvas.height - horizonY) * scale * 0.85;
+
                     drawVehicle(carXPos, carYPos, scale * 0.8, car.type);
                 }
             });
 
+            // Player Thar
             let tharCanvasX = canvas.width / 2 + (tharX * (roadBottomW / 2.3));
             let tharCanvasY = canvas.height - 135; 
             drawTharRear(tharCanvasX, tharCanvasY, 0.88);
