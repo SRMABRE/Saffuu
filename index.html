@@ -377,12 +377,13 @@
             background: linear-gradient(145deg, #ffffff, #f1f5f9);
             color: #0f172a;
             border: 4px solid #ffd700;
-            padding: 30px 24px;
+            padding: 35px 28px;
             border-radius: 24px;
-            max-width: 520px;
+            max-width: 580px;
             width: 92%;
             box-shadow: 0 0 70px rgba(255, 215, 0, 0.35);
             animation: cardGlow 3s infinite alternate ease-in-out;
+            position: relative;
         }
 
         @keyframes cardGlow {
@@ -393,50 +394,61 @@
         .bday-header-badge {
             background: linear-gradient(90deg, #ff2a5f, #ff758f);
             color: white;
-            padding: 8px 22px;
-            border-radius: 25px;
-            font-size: 13px;
+            padding: 10px 25px;
+            border-radius: 30px;
+            font-size: 15px;
             font-weight: 900;
             display: inline-block;
-            margin-bottom: 14px;
-            letter-spacing: 1px;
+            margin-bottom: 18px;
+            letter-spacing: 2px;
             box-shadow: 0 4px 15px rgba(255, 42, 95, 0.3);
+            text-transform: uppercase;
         }
 
         .bday-title {
             color: #0284c7;
-            font-size: 24px;
+            font-size: 28px;
             font-weight: 900;
             letter-spacing: 0.5px;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
         }
 
         .bday-subtitle {
-            font-size: 12px;
+            font-size: 13px;
             color: #64748b;
             font-weight: 800;
-            margin-bottom: 18px;
+            margin-bottom: 22px;
             text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .bday-letter {
-            font-size: 14px;
+            font-size: 15px;
             color: #1e293b;
-            line-height: 1.7;
+            line-height: 1.8;
             text-align: left;
-            background: rgba(248, 250, 252, 0.8);
-            padding: 18px;
+            background: rgba(248, 250, 252, 0.9);
+            padding: 22px;
             border-radius: 16px;
-            border-left: 4px solid #0ea5e9;
-            margin-bottom: 18px;
+            border-left: 5px solid #0ea5e9;
+            margin-bottom: 22px;
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.03);
+        }
+        
+        .bday-letter p {
+            margin-bottom: 12px;
+        }
+
+        .bday-letter p:last-child {
+            margin-bottom: 0;
         }
 
         .bday-footer-note {
             border-top: 2px dashed #cbd5e1;
-            padding-top: 14px;
+            padding-top: 18px;
             display: flex;
             justify-content: space-between;
-            font-size: 11px;
+            font-size: 13px;
             font-weight: bold;
             color: #475569;
         }
@@ -520,22 +532,23 @@
         <div id="finalBirthdayModal">
             <div class="cert-card">
                 <div class="bday-header-badge">🎂 HAPPY BIRTHDAY SAFA! 🎉</div>
-                <h2 class="bday-title">AIIMS DELHI UNLOCKED</h2>
-                <p class="bday-subtitle">A Special Message For My Dearest Cousin</p>
+                <h2 class="bday-title">AIIMS DELHI CONQUERED</h2>
+                <p class="bday-subtitle">A Very Special Note Just For You</p>
                 
                 <div class="bday-letter">
-                    <p><b>Dear Safa,</b></p><br>
-                    <p>Happy Birthday! 🎉 Today you didn't just drive your dream <b>Black Thar</b> all the way to AIIMS Delhi, you proved that no barrier can stay in your way when you set your mind to something.</p><br>
-                    <p>You are one of the most hardworking, dedicated, and wonderful cousins anyone could ask for. Watching your passion for cracking <b>NEET</b> and wearing that white coat with pride inspires everyone around you.</p><br>
-                    <p>May this year bring you all the focus, happiness, success, and strength to achieve every single dream you hold dear. AIIMS Delhi is waiting for you doctor sahiba! Keep shining! ✨🩺🚘</p>
+                    <p><b>Dearest Safa,</b></p>
+                    <p>Wishing you the happiest and most spectacular birthday ever! 🎉 Today, you didn't just drive your absolute dream—the fierce <b>Black Thar</b>—all the way to the gates of AIIMS Delhi, you showed exactly what you're made of.</p>
+                    <p>Just like navigating this road, I know the journey to cracking <b>NEET</b> is filled with speed bumps and sharp turns. But seeing your dedication, your relentless hard work, and the fire in your eyes makes us all believe that nothing is impossible for you.</p>
+                    <p>You are an incredible cousin, a brilliant mind, and soon, you'll be an outstanding doctor. Picture yourself stepping out of this Thar, wearing that crisp white coat, walking into AIIMS. That day isn't far! Keep grinding, keep believing, and never let anything slow you down.</p>
+                    <p>May this year bring you closer to your ultimate goal. We are all rooting for you, Doctor Sahiba! ✨🩺🚘</p>
                 </div>
 
                 <div class="bday-footer-note">
-                    <span>📍 Destination: AIIMS Delhi</span>
-                    <span>✍️ Reserved For: Safa</span>
+                    <span>📍 Destination: AIIMS Delhi Unlocked</span>
+                    <span>✍️ Reserved Exclusively For: Safa</span>
                 </div>
             </div>
-            <button class="unlock-btn" style="margin-top: 20px;" onclick="location.reload()">Drive Again 🔄</button>
+            <button class="unlock-btn" style="margin-top: 25px;" onclick="location.reload()">Take Another Drive 🔄</button>
         </div>
     </div>
 
@@ -556,10 +569,11 @@
         window.addEventListener('resize', resizeCanvas);
         resizeCanvas();
 
-        // Audio Effects via Web Audio API (Synth Music & Engine)
+        // Audio Effects via Web Audio API (IMPROVED RICH SOUNDS)
         const AudioCtx = window.AudioContext || window.webkitAudioContext;
         let audioCtx = null;
         let engineOsc = null;
+        let engineFilter = null;
         let engineGain = null;
         let musicTimer = null;
         let dostiMusicTimer = null;
@@ -568,47 +582,72 @@
             if (audioCtx) return;
             audioCtx = new AudioCtx();
 
+            // Richer Engine Sound
             engineOsc = audioCtx.createOscillator();
+            engineFilter = audioCtx.createBiquadFilter();
             engineGain = audioCtx.createGain();
+            
             engineOsc.type = 'sawtooth';
-            engineOsc.frequency.setValueAtTime(45, audioCtx.currentTime);
-            engineGain.gain.setValueAtTime(0.04, audioCtx.currentTime);
-            engineOsc.connect(engineGain);
+            engineOsc.frequency.setValueAtTime(40, audioCtx.currentTime);
+            
+            engineFilter.type = 'lowpass';
+            engineFilter.frequency.setValueAtTime(150, audioCtx.currentTime);
+            
+            engineGain.gain.setValueAtTime(0.06, audioCtx.currentTime);
+            
+            engineOsc.connect(engineFilter);
+            engineFilter.connect(engineGain);
             engineGain.connect(audioCtx.destination);
             engineOsc.start();
 
+            // Background Driving Beat/Melody
             let melody = [
-                329.63, 0, 329.63, 0, 392.00, 0, 440.00, 0, 
-                493.88, 493.88, 440.00, 392.00, 329.63, 0, 0, 0
+                220.00, 0, 261.63, 0, 329.63, 0, 293.66, 0, 
+                220.00, 220.00, 261.63, 329.63, 392.00, 0, 0, 0
             ];
+            let bassMelody = [110, 0, 130.81, 0, 164.81, 0, 146.83, 0];
+            
             let noteIdx = 0;
             musicTimer = setInterval(() => {
                 if (!gameActive) return;
                 try {
+                    let time = audioCtx.currentTime;
+                    // Main Melody
                     let freq = melody[noteIdx % melody.length];
                     if (freq > 0) {
                         let osc = audioCtx.createOscillator();
                         let gain = audioCtx.createGain();
                         osc.type = 'square';
-                        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-                        
-                        gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
-                        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.2);
-                        
-                        osc.connect(gain);
-                        gain.connect(audioCtx.destination);
-                        osc.start();
-                        osc.stop(audioCtx.currentTime + 0.2);
+                        osc.frequency.setValueAtTime(freq, time);
+                        gain.gain.setValueAtTime(0.03, time);
+                        gain.gain.exponentialRampToValueAtTime(0.001, time + 0.25);
+                        osc.connect(gain); gain.connect(audioCtx.destination);
+                        osc.start(time); osc.stop(time + 0.25);
+                    }
+                    
+                    // Bassline rhythm
+                    if (noteIdx % 2 === 0) {
+                        let bassFreq = bassMelody[(noteIdx/2) % bassMelody.length];
+                        if(bassFreq > 0) {
+                            let bOsc = audioCtx.createOscillator();
+                            let bGain = audioCtx.createGain();
+                            bOsc.type = 'sine';
+                            bOsc.frequency.setValueAtTime(bassFreq, time);
+                            bGain.gain.setValueAtTime(0.06, time);
+                            bGain.gain.exponentialRampToValueAtTime(0.001, time + 0.3);
+                            bOsc.connect(bGain); bGain.connect(audioCtx.destination);
+                            bOsc.start(time); bOsc.stop(time + 0.3);
+                        }
                     }
                     noteIdx++;
                 } catch(e){}
             }, 200);
         }
 
-        // Dedicated Friendship Victory Melody
+        // Dedicated Rich Friendship/Victory Melody
         function playDostiSong() {
             if (musicTimer) clearInterval(musicTimer);
-            if (engineGain) engineGain.gain.setValueAtTime(0, audioCtx.currentTime);
+            if (engineGain) engineGain.gain.setTargetAtTime(0, audioCtx.currentTime, 0.5);
 
             let dostiNotes = [
                 261.63, 293.66, 329.63, 349.23, 392.00, 392.00, 440.00, 392.00,
@@ -617,44 +656,53 @@
             let nIdx = 0;
             dostiMusicTimer = setInterval(() => {
                 try {
+                    let time = audioCtx.currentTime;
                     let freq = dostiNotes[nIdx % dostiNotes.length];
-                    let osc = audioCtx.createOscillator();
+                    
+                    // Dual oscillators for a beautiful chorus effect
+                    let osc1 = audioCtx.createOscillator();
+                    let osc2 = audioCtx.createOscillator();
                     let gain = audioCtx.createGain();
-                    osc.type = 'triangle';
-                    osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
                     
-                    gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
-                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.35);
+                    osc1.type = 'triangle';
+                    osc2.type = 'sine';
+                    osc1.frequency.setValueAtTime(freq, time);
+                    osc2.frequency.setValueAtTime(freq * 1.01, time); // slight detune
                     
-                    osc.connect(gain);
+                    gain.gain.setValueAtTime(0.15, time);
+                    gain.gain.exponentialRampToValueAtTime(0.001, time + 0.4);
+                    
+                    osc1.connect(gain);
+                    osc2.connect(gain);
                     gain.connect(audioCtx.destination);
-                    osc.start();
-                    osc.stop(audioCtx.currentTime + 0.35);
+                    osc1.start(time); osc2.start(time);
+                    osc1.stop(time + 0.4); osc2.stop(time + 0.4);
                     nIdx++;
                 } catch(e){}
-            }, 260);
+            }, 280);
         }
 
         function updateEngineAudio(currentSpeed) {
             if (!audioCtx || !engineOsc) return;
-            let pitch = 40 + (currentSpeed * 1.2);
+            let pitch = 35 + (currentSpeed * 1.5);
+            let filterFreq = 150 + (currentSpeed * 8);
             engineOsc.frequency.setTargetAtTime(pitch, audioCtx.currentTime, 0.1);
+            engineFilter.frequency.setTargetAtTime(filterFreq, audioCtx.currentTime, 0.1);
         }
 
         function playCrashSound() {
             try {
                 if (!audioCtx) return;
+                let time = audioCtx.currentTime;
                 let osc = audioCtx.createOscillator();
                 let gain = audioCtx.createGain();
-                osc.type = 'sawtooth';
-                osc.frequency.setValueAtTime(150, audioCtx.currentTime);
-                osc.frequency.exponentialRampToValueAtTime(30, audioCtx.currentTime + 0.4);
-                gain.gain.setValueAtTime(0.4, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
-                osc.connect(gain);
-                gain.connect(audioCtx.destination);
-                osc.start();
-                osc.stop(audioCtx.currentTime + 0.4);
+                osc.type = 'square';
+                osc.frequency.setValueAtTime(100, time);
+                osc.frequency.exponentialRampToValueAtTime(20, time + 0.5);
+                gain.gain.setValueAtTime(0.5, time);
+                gain.gain.exponentialRampToValueAtTime(0.01, time + 0.5);
+                osc.connect(gain); gain.connect(audioCtx.destination);
+                osc.start(time); osc.stop(time + 0.5);
             } catch(e) {}
         }
 
@@ -681,6 +729,7 @@
 
         let roadOffset = 0;
         let streetLamps = [];
+        let environmentTrees = [];
         let traffic = [];
         let fireworks = [];
         let aiimsZ = 1600;
@@ -718,8 +767,10 @@
         bindTouch('btnBrake', 'down');
         bindTouch('btnNitro', 'nitro');
 
+        // Setup environment (Poles and Trees)
         for (let i = 0; i < 20; i++) {
             streetLamps.push({ absZ: i * 80, side: i % 2 === 0 ? -1 : 1 });
+            environmentTrees.push({ absZ: (i * 90) + 40, side: i % 2 === 0 ? 1 : -1, type: Math.random() > 0.5 ? 1 : 2 });
         }
 
         const vehicleModels = ['swift_white', 'superbike', 'sports_red', 'black_suv'];
@@ -781,7 +832,6 @@
             targetCtx.fillRect(-50, -50, 100, 30);
 
             if (isFront) {
-                // Front View: 7-Slot Grille & Round Lights
                 targetCtx.fillStyle = "#1e293b";
                 targetCtx.fillRect(-45, -15, 90, 35);
                 
@@ -790,14 +840,12 @@
                     targetCtx.fillRect(g, -10, 6, 24);
                 }
 
-                // Round Headlights
                 targetCtx.fillStyle = "#fef08a";
                 targetCtx.shadowColor = "#fde047"; targetCtx.shadowBlur = 15;
                 targetCtx.beginPath(); targetCtx.arc(-55, -2, 11, 0, Math.PI * 2); targetCtx.fill();
                 targetCtx.beginPath(); targetCtx.arc(55, -2, 11, 0, Math.PI * 2); targetCtx.fill();
                 targetCtx.shadowBlur = 0;
 
-                // Mahindra Front Bumper & Badge
                 targetCtx.fillStyle = "#334155";
                 targetCtx.fillRect(-65, 20, 130, 18);
                 targetCtx.fillStyle = "#ffd700";
@@ -805,7 +853,6 @@
                 targetCtx.textAlign = "center";
                 targetCtx.fillText("THAR • SAFA", 0, 33);
             } else {
-                // Rear View: Spare Wheel & Rectangular Tail Lights
                 targetCtx.fillStyle = "#000";
                 targetCtx.beginPath(); targetCtx.arc(0, -5, 28, 0, Math.PI * 2); targetCtx.fill();
                 targetCtx.strokeStyle = "#475569"; targetCtx.lineWidth = 4; targetCtx.stroke();
@@ -821,7 +868,6 @@
                 targetCtx.textAlign = "center";
                 targetCtx.fillText("SAFA'S 4x4", 0, 33);
             }
-
             targetCtx.restore();
         }
 
@@ -830,15 +876,12 @@
             let w = showroomCanvas.width;
             let h = showroomCanvas.height;
             showCtx.clearRect(0, 0, w, h);
-
             let cx = w / 2;
             let cy = h / 2 + 30;
-
             showCtx.save();
             showCtx.translate(cx, cy);
             renderShowroomThar(showCtx, showroomAngle);
             showCtx.restore();
-
             showroomAngle += 0.03;
             requestAnimationFrame(renderShowroom);
         }
@@ -857,47 +900,32 @@
             ctx.save();
             ctx.translate(x, y);
             ctx.scale(scale, scale);
-
-            // Shadow
             ctx.fillStyle = "rgba(0, 0, 0, 0.65)";
             ctx.beginPath();
             ctx.ellipse(0, 38, 80, 18, 0, 0, Math.PI * 2);
             ctx.fill();
-
-            // Tires
             ctx.fillStyle = "#0a0a0a";
             ctx.fillRect(-82, -18, 26, 56); 
             ctx.fillRect(56, -18, 26, 56);  
-
-            // Body
             ctx.fillStyle = "#020617"; 
             ctx.beginPath();
             if (ctx.roundRect) ctx.roundRect(-68, -60, 136, 86, 8); else ctx.rect(-68, -60, 136, 86);
             ctx.fill();
-
-            // Cabin Glass
             ctx.fillStyle = "#0b1329";
             ctx.fillRect(-52, -52, 104, 36);
-
-            // Spare Wheel
             ctx.fillStyle = "#030712";
             ctx.beginPath(); ctx.arc(0, -6, 28, 0, Math.PI * 2); ctx.fill();
             ctx.strokeStyle = "#374151"; ctx.lineWidth = 4; ctx.stroke();
-
-            // Tail Lights
             ctx.fillStyle = "#ef4444";
             ctx.shadowColor = "#ff0000"; ctx.shadowBlur = 12;
             ctx.fillRect(-65, -24, 12, 26);
             ctx.fillRect(53, -24, 12, 26);
             ctx.shadowBlur = 0;
-
-            // Bumper & Plate
             ctx.fillStyle = "#030712"; ctx.fillRect(-70, 18, 140, 18);
             ctx.fillStyle = "#0f172a"; ctx.fillRect(-40, 20, 80, 14);
             ctx.strokeStyle = "#ffd700"; ctx.lineWidth = 1; ctx.strokeRect(-40, 20, 80, 14);
             ctx.fillStyle = "#ffd700"; ctx.font = "900 9px sans-serif"; ctx.textAlign = "center";
             ctx.fillText("SAFA'S THAR", 0, 31);
-
             ctx.restore();
         }
 
@@ -906,7 +934,6 @@
             ctx.save();
             ctx.translate(x, y);
             ctx.scale(scale, scale);
-
             if (type === 'superbike') {
                 ctx.fillStyle = "#000"; ctx.fillRect(-6, -10, 12, 40); 
                 ctx.fillStyle = "#ea580c"; ctx.fillRect(-14, -26, 28, 20); 
@@ -926,56 +953,93 @@
                 ctx.fillStyle = "#020617"; ctx.fillRect(-32, -24, 64, 18); 
                 ctx.fillStyle = "#ff0000"; ctx.fillRect(-38, 8, 14, 5); ctx.fillRect(24, 8, 14, 5);
             }
-
             ctx.restore();
         }
 
-        /* --- ACCURATE AIIMS DELHI BUILDING --- */
+        /* --- MORE REALISTIC AIIMS BUILDING --- */
         function drawAIIMSBuilding(x, y, scale) {
             ctx.save();
             ctx.translate(x, y);
             ctx.scale(scale, scale);
 
+            // Ground/Shadow Base underneath the building
+            ctx.fillStyle = "rgba(0,0,0,0.4)";
+            ctx.beginPath(); ctx.ellipse(0, 0, 400, 40, 0, 0, Math.PI*2); ctx.fill();
+
             // Main Building Concrete Facade
-            ctx.fillStyle = "#e2e8f0"; 
+            ctx.fillStyle = "#cbd5e1"; 
             ctx.fillRect(-340, -280, 680, 280);
 
-            // Grid Windows
-            ctx.fillStyle = "#1e293b";
-            for(let r = -250; r < -70; r += 24) {
-                for(let c = -310; c < 310; c += 28) {
-                    ctx.fillRect(c, r, 16, 14);
+            // Structural depth shadows
+            ctx.fillStyle = "#94a3b8";
+            ctx.fillRect(-340, -280, 40, 280);
+            ctx.fillRect(300, -280, 40, 280);
+
+            // Grid Windows (Dark blue/black reflection)
+            ctx.fillStyle = "#0f172a";
+            for(let r = -250; r < -50; r += 26) {
+                for(let c = -290; c < 290; c += 30) {
+                    ctx.fillRect(c, r, 18, 16);
                 }
             }
 
-            // Greenery / Trees Base
-            ctx.fillStyle = "#15803d";
-            for(let t = -320; t <= 320; t += 40) {
-                ctx.beginPath(); ctx.arc(t, -20, 30, 0, Math.PI * 2); ctx.fill();
+            // Greenery / Trees Base in front
+            ctx.fillStyle = "#166534";
+            for(let t = -330; t <= 330; t += 35) {
+                ctx.beginPath(); ctx.arc(t, -25, 35, 0, Math.PI * 2); ctx.fill();
             }
+
+            // Entrance Door Pillars
+            ctx.fillStyle = "#e2e8f0";
+            ctx.fillRect(-60, -60, 120, 60);
+            ctx.fillStyle = "#020617";
+            ctx.fillRect(-40, -40, 80, 40);
 
             // Official Top Header Frame
             ctx.fillStyle = "#ffffff";
-            ctx.fillRect(-320, -340, 640, 55);
-            ctx.strokeStyle = "#475569"; ctx.lineWidth = 3;
-            ctx.strokeRect(-320, -340, 640, 55);
+            ctx.fillRect(-320, -345, 640, 65);
+            ctx.fillStyle = "#94a3b8";
+            ctx.fillRect(-320, -280, 640, 8);
 
             // Devanagari Hindi Text Signboard
             ctx.fillStyle = "#701a75";
-            ctx.font = "bold 15px Arial";
+            ctx.font = "bold 16px Arial";
             ctx.textAlign = "center";
-            ctx.fillText("अखिल भारतीय आयुर्विज्ञान संस्थान", 0, -318);
+            ctx.fillText("अखिल भारतीय आयुर्विज्ञान संस्थान", 0, -320);
 
             // English Signboard
             ctx.fillStyle = "#1e1b4b";
-            ctx.font = "900 17px Arial";
-            ctx.fillText("ALL INDIA INSTITUTE OF MEDICAL SCIENCES", 0, -297);
+            ctx.font = "900 19px Arial";
+            ctx.fillText("ALL INDIA INSTITUTE OF MEDICAL SCIENCES", 0, -295);
 
             // Red Medical Crosses on Wings
             ctx.fillStyle = "#ef4444";
-            ctx.fillRect(-300, -260, 24, 8); ctx.fillRect(-292, -268, 8, 24);
-            ctx.fillRect(276, -260, 24, 8); ctx.fillRect(284, -268, 8, 24);
+            ctx.fillRect(-300, -255, 26, 10); ctx.fillRect(-292, -263, 10, 26);
+            ctx.fillRect(274, -255, 26, 10); ctx.fillRect(282, -263, 10, 26);
 
+            ctx.restore();
+        }
+
+        // Environment Trees Drawing
+        function drawTree(x, y, scale, type) {
+            ctx.save();
+            ctx.translate(x, y);
+            ctx.scale(scale, scale);
+            // Trunk
+            ctx.fillStyle = "#451a03";
+            ctx.fillRect(-5, -40, 10, 40);
+            // Leaves
+            if (type === 1) {
+                ctx.fillStyle = "#064e3b";
+                ctx.beginPath(); ctx.arc(0, -50, 30, 0, Math.PI*2); ctx.fill();
+                ctx.beginPath(); ctx.arc(-15, -35, 20, 0, Math.PI*2); ctx.fill();
+                ctx.beginPath(); ctx.arc(15, -35, 20, 0, Math.PI*2); ctx.fill();
+            } else {
+                ctx.fillStyle = "#065f46";
+                ctx.beginPath();
+                ctx.moveTo(0, -90); ctx.lineTo(-30, -30); ctx.lineTo(30, -30); ctx.fill();
+                ctx.moveTo(0, -60); ctx.lineTo(-35, -10); ctx.lineTo(35, -10); ctx.fill();
+            }
             ctx.restore();
         }
 
@@ -986,13 +1050,10 @@
                 lastGiftTime = now;
                 const pop = document.getElementById("flyingMsg");
                 const item = giftList[Math.floor(Math.random() * giftList.length)];
-                
                 pop.className = "";
                 void pop.offsetWidth; 
-                
                 document.getElementById("popIcon").innerText = item.icon;
                 document.getElementById("popMsg").innerText = item.text;
-                
                 const randomAnim = animClasses[Math.floor(Math.random() * animClasses.length)];
                 pop.classList.add(randomAnim);
             }
@@ -1101,21 +1162,49 @@
 
             let horizonY = canvas.height * 0.46; 
 
-            // Sky
+            // Environment Background (Sky & Mountains)
             let skyGrad = ctx.createLinearGradient(0, 0, 0, horizonY);
             skyGrad.addColorStop(0, '#020617');
             skyGrad.addColorStop(1, '#0f172a');
             ctx.fillStyle = skyGrad;
             ctx.fillRect(0, 0, canvas.width, horizonY);
+            
+            // Distant Mountains
+            ctx.fillStyle = "#0b132b";
+            ctx.beginPath();
+            ctx.moveTo(0, horizonY);
+            ctx.lineTo(canvas.width * 0.1, horizonY - 40);
+            ctx.lineTo(canvas.width * 0.3, horizonY - 10);
+            ctx.lineTo(canvas.width * 0.6, horizonY - 60);
+            ctx.lineTo(canvas.width * 0.8, horizonY - 20);
+            ctx.lineTo(canvas.width, horizonY - 50);
+            ctx.lineTo(canvas.width, horizonY);
+            ctx.fill();
 
             // Pseudo 3D Road
             roadOffset = worldZ;
             let roadTopW = 35;
             let roadBottomW = canvas.width * 0.92;
 
-            ctx.fillStyle = "#022c22";
+            // Grassy terrain with moving stripes for speed effect
+            let grassColor1 = "#064e3b";
+            let grassColor2 = "#022c22";
+            ctx.fillStyle = grassColor1;
             ctx.fillRect(0, horizonY, canvas.width, canvas.height - horizonY);
+            
+            ctx.fillStyle = grassColor2;
+            for(let i = 0; i < 20; i++) {
+                let relZ = (i * 100) - (roadOffset % 100);
+                if (relZ > 0) {
+                    let scale1 = 1 / (relZ * 0.0018 + 1);
+                    let scale2 = 1 / ((relZ+50) * 0.0018 + 1);
+                    let y1 = horizonY + (canvas.height - horizonY) * scale1;
+                    let y2 = horizonY + (canvas.height - horizonY) * scale2;
+                    ctx.fillRect(0, y2, canvas.width, y1 - y2);
+                }
+            }
 
+            // Road Surface
             ctx.fillStyle = "#1e293b";
             ctx.beginPath();
             ctx.moveTo(canvas.width / 2 - roadTopW / 2, horizonY);
@@ -1124,12 +1213,14 @@
             ctx.lineTo(canvas.width / 2 - roadBottomW / 2, canvas.height);
             ctx.closePath(); ctx.fill();
 
+            // Road Borders
             ctx.strokeStyle = "#ffd700"; ctx.lineWidth = 4;
             ctx.beginPath();
             ctx.moveTo(canvas.width / 2 - roadTopW / 2, horizonY); ctx.lineTo(canvas.width / 2 - roadBottomW / 2, canvas.height);
             ctx.moveTo(canvas.width / 2 + roadTopW / 2, horizonY); ctx.lineTo(canvas.width / 2 + roadBottomW / 2, canvas.height);
             ctx.stroke();
 
+            // Center Dash Line
             ctx.strokeStyle = "#f8fafc"; ctx.lineWidth = 3;
             ctx.setLineDash([16, 16]);
             ctx.lineDashOffset = -roadOffset % 32;
@@ -1138,35 +1229,63 @@
             ctx.stroke();
             ctx.setLineDash([]);
 
-            // Highway Poles
-            streetLamps.forEach(lamp => {
-                let relativeZ = lamp.absZ - worldZ;
-                if (relativeZ < 0) lamp.absZ += 1000;
-
-                if (relativeZ > 0 && relativeZ < 1000) {
+            // Scenery: Trees
+            environmentTrees.forEach(tree => {
+                let relativeZ = tree.absZ - worldZ;
+                if (relativeZ < 0) {
+                    tree.absZ += 1800;
+                    tree.type = Math.random() > 0.5 ? 1 : 2; // randomize new tree
+                }
+                if (relativeZ > 0 && relativeZ < 1500) {
                     let scale = 1 / (relativeZ * 0.0018 + 1);
-                    let x = canvas.width / 2 + lamp.side * (roadBottomW / 2 + 35) * scale;
+                    let x = canvas.width / 2 + tree.side * (roadBottomW / 2 + 180) * scale;
                     let y = horizonY + (canvas.height - horizonY) * scale;
-                    ctx.fillStyle = "#ffd700"; ctx.beginPath(); ctx.arc(x, y - 25 * scale, 5 * scale, 0, Math.PI * 2); ctx.fill();
+                    drawTree(x, y, scale * 1.5, tree.type);
                 }
             });
 
-            // AIIMS Approach
-            if (distanceLeft <= 0.8) {
+            // Scenery: Highway Poles
+            streetLamps.forEach(lamp => {
+                let relativeZ = lamp.absZ - worldZ;
+                if (relativeZ < 0) lamp.absZ += 1600;
+
+                if (relativeZ > 0 && relativeZ < 1500) {
+                    let scale = 1 / (relativeZ * 0.0018 + 1);
+                    let x = canvas.width / 2 + lamp.side * (roadBottomW / 2 + 45) * scale;
+                    let y = horizonY + (canvas.height - horizonY) * scale;
+                    // Pole
+                    ctx.fillStyle = "#475569";
+                    ctx.fillRect(x - 2*scale, y - 80*scale, 4*scale, 80*scale);
+                    // Light
+                    ctx.fillStyle = "#ffd700"; ctx.beginPath(); ctx.arc(x, y - 80 * scale, 6 * scale, 0, Math.PI * 2); ctx.fill();
+                    ctx.shadowColor = "#fde047"; ctx.shadowBlur = 15;
+                    ctx.beginPath(); ctx.arc(x, y - 80 * scale, 3 * scale, 0, Math.PI * 2); ctx.fill();
+                    ctx.shadowBlur = 0;
+                }
+            });
+
+            // Realistic AIIMS Approach mapping from horizon Z-perspective
+            if (distanceLeft <= 1.5) {
                 let relAiimsZ = aiimsZ - worldZ;
-                if (relAiimsZ < 110) relAiimsZ = 110;
+                // Don't let it clip too far behind the camera
+                if (relAiimsZ < -50) relAiimsZ = -50;
 
-                let scale = 1 / (relAiimsZ * 0.0014 + 1);
-                let bX = canvas.width / 2;
-                let bY = horizonY + (canvas.height - horizonY) * scale * 0.65;
+                if (relAiimsZ > -50 && relAiimsZ < 3000) {
+                    let scale = 1 / (relAiimsZ * 0.0018 + 1);
+                    
+                    // The base of the building exactly matches the perspective of the road shrinking
+                    let bX = canvas.width / 2;
+                    let bY = horizonY + (canvas.height - horizonY) * scale;
+                    
+                    drawAIIMSBuilding(bX, bY, scale);
 
-                drawAIIMSBuilding(bX, bY, scale);
-
-                if (distanceLeft <= 0 && relAiimsZ <= 120) {
-                    gameActive = false;
-                    setTimeout(() => {
-                        document.getElementById("secretLockScreen").classList.add("active");
-                    }, 800);
+                    // Stop logic when very close
+                    if (distanceLeft <= 0 && relAiimsZ <= 60) {
+                        gameActive = false;
+                        setTimeout(() => {
+                            document.getElementById("secretLockScreen").classList.add("active");
+                        }, 800);
+                    }
                 }
             }
 
